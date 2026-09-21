@@ -62,8 +62,9 @@ class PatientProfileController {
             pictures.busy = true;
             pictures.render();
             try {
+                const storedPictures = await pictures.upload(this.client);
                 const { data, error } = await this.client.from('patients')
-                    .update({ record_pictures: [...pictures.pictures] })
+                    .update({ record_pictures: storedPictures })
                     .eq('id', this.patientId).eq('updated_at', patient.updated_at)
                     .select('updated_at').maybeSingle();
                 if (error) throw error;

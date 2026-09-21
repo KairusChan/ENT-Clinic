@@ -31,7 +31,6 @@ class PatientRegistrationController {
             this.setStatus('Date of birth cannot be in the future.');
             return;
         }
-        patient.record_pictures = [...this.pictures.pictures];
         Object.keys(patient).forEach((key) => {
             if (patient[key] === '') {
                 delete patient[key];
@@ -42,7 +41,10 @@ class PatientRegistrationController {
         this.saving = true;
         const button = this.form.querySelector('[type="submit"]');
         button.disabled = true;
+        this.pictures.busy = true;
+        this.pictures.render();
         try {
+            patient.record_pictures = await this.pictures.upload(this.client);
             const { error } = await this.client.from('patients').insert(patient);
             if (error) {
                 this.setStatus(error.code === '23505'
@@ -51,9 +53,11 @@ class PatientRegistrationController {
                 return;
             }
             window.location.href = 'search.html';
-        } catch {
-            this.setStatus('Unable to confirm the save. Check Patient Lists before trying again.');
+        } catch (error) {
+            this.setStatus(error.message?.startsWith('Picture upload failed:') ? error.message : 'Unable to confirm the save. Check Patient Lists before trying again.');
         } finally {
+            this.pictures.busy = false;
+            this.pictures.render();
             this.saving = false;
             button.disabled = false;
         }

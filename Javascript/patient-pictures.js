@@ -1,4 +1,4 @@
-// Pictures are resized and stored with the patient, under the same access policies.
+// Pictures are resized locally, then uploaded to private Supabase Storage.
 class PatientPictures {
     constructor(root, pictures = [], editable = true) {
         this.root = root;
@@ -21,7 +21,14 @@ class PatientPictures {
         this.pictures.forEach((source, index) => {
             const card = document.createElement('div');
             const img = document.createElement('img');
-            img.src = source;
+            if (source.startsWith('data:image/')) img.src = source;
+            else {
+                window.entSupabase.storage.from(PatientPictures.bucket)
+                    .createSignedUrl(source, 3600).then(({ data, error }) => {
+                        if (error) { img.alt += ' (unable to load)'; return; }
+                        img.src = data.signedUrl;
+                    }).catch(() => { img.alt += ' (unable to load)'; });
+            }
             img.alt = `Patient record picture ${index + 1}`;
             card.append(img);
             if (this.editable) {
@@ -51,13 +58,13 @@ class PatientPictures {
     }
 
     pick(capture, index = null) {
-        if (capture && index === null) {
+        if (capture) {
             if (window.entCamera) {
-                this.captureWithCamera(window.entCamera.capture);
+                this.captureWithCamera(() => window.entCamera.capture(), index);
                 return;
             }
             if (typeof navigator !== 'undefined' && navigator.mediaDevices?.getUserMedia) {
-                this.captureWithCamera(() => this.captureFromBrowser());
+                this.captureWithCamera(() => this.captureFromBrowser(), index);
                 return;
             }
         }
@@ -71,7 +78,7 @@ class PatientPictures {
         input.click();
     }
 
-    async captureWithCamera(capture) {
+    async captureWithCamera(capture, index = null) {
         if (this.busy) return;
         this.busy = true;
         this.render();
@@ -81,12 +88,12 @@ class PatientPictures {
             const response = await fetch(dataUrl);
             const file = new File([await response.blob()], `patient-picture-${Date.now()}.jpg`, { type: 'image/jpeg' });
             this.busy = false;
-            await this.addFiles([file]);
+            await this.addFiles([file], index);
         } catch (error) {
             this.busy = false;
             this.render();
             if (error?.message?.toLowerCase().includes('cancel')) return;
-            this.status.textContent = 'Unable to open the camera. Please try again.';
+            this.status.textContent = 'Unable to open the camera. Allow camera access in your browser or device settings, or use Upload pictures.';
         }
     }
 
@@ -146,6 +153,23 @@ class PatientPictures {
             this.render();
             this.status.textContent = error.message;
         }
+    }
+
+    static bucket = 'PatientRecordUploads';
+
+    async upload(client) {
+        // Replace each successful upload in place so a retry reuses its object.
+        for (let index = 0; index < this.pictures.length; index++) {
+            const source = this.pictures[index];
+            if (!source.startsWith('data:image/')) continue;
+            const blob = await (await fetch(source)).blob();
+            const path = `records/${crypto.randomUUID()}.jpg`;
+            const { error } = await client.storage.from(PatientPictures.bucket)
+                .upload(path, blob, { contentType: 'image/jpeg', upsert: false });
+            if (error) throw new Error(`Picture upload failed: ${error.message}`);
+            this.pictures[index] = path;
+        }
+        return [...this.pictures];
     }
 
     static async encode(file) {
