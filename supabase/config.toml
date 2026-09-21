@@ -1,0 +1,2 @@
+﻿[functions.send-schedule-push]
+verify_jwt = false

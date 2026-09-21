@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | Schedule</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">ENT</div>
+            <div><strong>ENT Clinic</strong><small>Secretary workspace</small></div>
+        </div>
+    </header>
+    <div class="layout">
+        <aside class="sidebar">
+            <p class="sidebar-title">ENT CLINIC</p>
+            <nav><a class="nav-item" href="index.html">Dashboard</a><a class="nav-item" href="queue.html">Today's Patients / Queue</a><a class="nav-item" href="search.html">Patient Lists</a><a class="nav-item" href="register.html">Register Patient</a><a class="nav-item active" href="schedule.html">Schedule</a><a class="nav-item" href="appointment.html">Add Appointment</a></nav>
+            <div class="nav-bottom"><a class="nav-item logout-link" href="../index.html">Logout</a></div>
+        </aside>
+        <main><div class="page-head"><div><h1>Schedule</h1><p>Schedule an operation or event with a doctor.</p></div></div>
+<form id="booking-form" class="panel form-grid">
+<div class="field patient-picker" id="patient-picker">
+<label for="patient-search">Patient (optional for events)</label>
+<input id="patient-search" data-patient-search type="search" placeholder="Search patient name..." autocomplete="off" required aria-describedby="patient-search-status">
+<input type="hidden" name="patient_id" id="booking-patient">
+<div data-patient-results class="patient-picker-results"></div>
+<small id="patient-search-status" role="status" aria-live="polite">Type a name, then choose a patient.</small>
+</div>
+<label class="field">Doctor<select name="doctor_id" id="booking-doctor" required><option value="">Select doctor</option></select></label>
+<label class="field">Type<select name="kind" id="booking-kind"><option value="operation">Operation</option><option value="event">Event</option></select></label>
+<label class="field">Procedure / event title<input name="reason" required maxlength="500"></label>
+<label class="field">Starts<input name="starts_at" type="datetime-local" required></label>
+<label class="field">Ends<input name="ends_at" type="datetime-local" required></label>
+<label class="field">Clinic / location<input name="clinic_location" required maxlength="200"></label>
+<div class="form-actions"><button class="primary" type="submit">Save Schedule</button></div>
+<p id="booking-status" class="form-status" role="status"></p></form><section class="panel section" id="schedule-panel" data-schedule-kinds="operation,event">
+<div class="section-title"><h2>Doctor schedule</h2></div>
+<p>Operations and events. Times are shown in your local time zone. Reminders refresh every 30 seconds while this workspace is open.</p>
+<div id="schedule-reminders" class="schedule-reminders" role="status" aria-live="polite"></div>
+<label class="field">Schedule date<input id="schedule-date" type="date" required></label>
+<div id="schedule-results">Loading schedule...</div><p id="schedule-status" role="status"></p>
+</section></main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-client.js" defer></script>
+    <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/patient-picker.js" defer></script>
+    <script src="../Javascript/schedule.js" defer></script>
+</body>
+
+</html>

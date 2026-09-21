@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | Patient Profile</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">ENT</div>
+            <div><strong>ENT Clinic</strong><small>Doctor workspace</small></div>
+        </div>
+    </header>
+    <div class="layout">
+        <aside class="sidebar">
+            <p class="sidebar-title">ENT CLINIC</p>
+            <nav><a class="nav-item" href="index.html">Dashboard</a><a class="nav-item" href="queue.html">Today's
+                    Patients / Queue</a><a class="nav-item" href="search.html">Patient Lists</a><a class="nav-item"
+                    href="schedule.html">My Schedule</a></nav>
+            <div class="nav-bottom"><a class="nav-item logout-link" href="../index.html">Logout</a></div>
+        </aside>
+        <main>
+            <div class="page-head">
+                <div>
+                    <div class="eyebrow">Clinic workspace</div>
+                    <h1>Patient profile</h1>
+                    <p>Review the patient's details and recent visit history.</p>
+                </div>
+            </div>
+            <section class="panel">
+                <div class="profile-head" id="patient-header">
+                    <div class="avatar">?</div>
+                    <div><strong>Loading patient...</strong><small>Retrieving patient details from Supabase.</small>
+                    </div>
+                </div>
+                <div class="profile-grid" id="patient-details"></div>
+                <section id="patient-pictures" class="patient-pictures"></section>
+                <h3>Recent visits</h3>
+                <div id="patient-visits">
+                    <p>Loading visit history...</p>
+                </div>
+                <div class="form-actions"><a class="outline" href="search.html">← &nbsp; Search Patients</a></div>
+            </section>
+
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-client.js" defer></script>
+    <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/patient-pictures.js" defer></script>
+    <script src="../Javascript/patient-profile.js" defer></script>
+</body>
+
+</html>

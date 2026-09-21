@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | Register Patient</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">ENT</div>
+            <div><strong>ENT Clinic</strong><small>Secretary workspace</small></div>
+        </div>
+    </header>
+    <div class="layout">
+        <aside class="sidebar">
+            <p class="sidebar-title">ENT CLINIC</p>
+            <nav><a class="nav-item" href="index.html">Dashboard</a><a class="nav-item" href="queue.html">Today's Patients / Queue</a><a class="nav-item" href="search.html">Patient Lists</a><a class="nav-item active" href="register.html">Register Patient</a><a class="nav-item" href="schedule.html">Schedule</a><a class="nav-item" href="appointment.html">Add Appointment</a></nav>
+            <div class="nav-bottom"><a class="nav-item logout-link" href="../index.html">Logout</a></div>
+        </aside>
+        <main>
+            <div class="page-head">
+                <div>
+                    <div class="eyebrow">New patient</div>
+                    <h1>Register patient</h1>
+                    <p>Add the patient's details before starting their visit.</p>
+                </div>
+            </div>
+            <section class="panel">
+                <form class="form-grid" id="patient-registration-form">
+                    <label class="field">First name<input name="first_name" required></label>
+                    <label class="field">Last name<input name="last_name" required></label>
+                    <label class="field">Middle name<input name="middle_name"></label><label class="field">Suffix<select name="suffix"><option value="">None</option><option>Jr.</option><option>Sr.</option><option>II</option><option>III</option><option>IV</option><option>V</option></select></label>
+                    <label class="field">Date of birth<input name="date_of_birth" type="date" required></label>
+                    <label class="field">Sex<select name="sex">
+                            <option value="">Select sex</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="other">Other</option>
+                            <option value="prefer_not_to_say">Prefer not to say</option>
+                        </select></label>
+                    <label class="field">Phone<input name="phone" type="tel"></label>
+                    <label class="field">Address<input name="address"></label>
+                    <section id="patient-pictures" class="patient-pictures"></section>
+                    <div class="form-actions"><  class="primary" type="submit">Save Patient</button><a
+                            class="outline" href="search.html">Cancel</a></div>
+                </form>
+                <p class="form-status" role="status"></p>
+            </section>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-client.js" defer></script>
+    <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/patient-pictures.js" defer></script>
+    <script src="../Javascript/patient-registration.js" defer></script>
+</body>
+
+</html>

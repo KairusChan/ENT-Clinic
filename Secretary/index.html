@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | Dashboard</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">ENT</div>
+            <div><strong>ENT Clinic</strong><small>Secretary workspace</small></div>
+        </div>
+    </header>
+    <div class="layout">
+        <aside class="sidebar">
+            <p class="sidebar-title">ENT CLINIC</p>
+            <nav><a class="nav-item active" href="index.html">Dashboard</a><a class="nav-item" href="queue.html">Today's
+                    Patients / Queue</a><a class="nav-item" href="search.html">Patient Lists</a><a class="nav-item"
+                    href="register.html">Register Patient</a><a class="nav-item" href="schedule.html">Schedule</a><a class="nav-item" href="appointment.html">Add Appointment</a></nav>
+            <div class="nav-bottom"><a class="nav-item logout-link" href="../index.html">Logout</a></div>
+        </aside>
+        <main>
+            <div class="page-head">
+                <div>
+                    <div class="eyebrow">Clinic workspace</div>
+                    <h1>Hello, Secretary</h1>
+                    <p>Ready for today's clinic? Start a patient check-in from here.</p>
+                </div>
+            </div>
+            <section class="panel">
+                <div class="grid">
+                    <div class="metric"><strong id="metric-all">0</strong><small>Patients Today</small></div>
+                    <div class="metric"><strong id="metric-waiting">0</strong><small>Waiting</small></div>
+                    <div class="metric"><strong id="metric-with-doctor">0</strong><small>With Doctor</small></div>
+                    <div class="metric"><strong id="metric-completed">0</strong><small>Completed</small></div>
+                </div><a class="primary" href="appointment.html">＋ &nbsp; Add Appointment</a>
+            </section>
+            <section class="panel section">
+                <div class="section-title">
+                    <h3>Today's Queue (Latest)</h3><a href="queue.html">View All</a>
+                </div>
+                <div id="dashboard-queue">
+                    <p>Loading today's queue...</p>
+                </div>
+            </section>
+            <section class="panel section" id="schedule-panel">
+                <div class="section-title">
+                    <h2>Doctor schedule</h2>
+                </div>
+                <p>Consultations, operations, and events. Times are shown in your local time zone. Reminders refresh every 30
+                    seconds while this workspace is open.</p>
+                <div id="schedule-reminders" class="schedule-reminders" role="status" aria-live="polite"></div>
+                <label class="field">Schedule date<input id="schedule-date" type="date" required></label>
+                <div id="schedule-results">Loading schedule...</div>
+                <p id="schedule-status" role="status"></p>
+            </section>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-client.js" defer></script>
+    <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/dashboard.js" defer></script>
+    <script src="../Javascript/schedule.js" defer></script>
+</body>
+
+</html>

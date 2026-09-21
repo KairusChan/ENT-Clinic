@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | Admin</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">ENT</div>
+            <div><strong>ENT Clinic</strong><small>Admin workspace</small></div>
+        </div>
+    </header>
+    <div class="layout">
+        <aside class="sidebar">
+            <p class="sidebar-title">ENT CLINIC</p>
+            <nav>
+                <a class="nav-item active" href="index.html"><span>⌂</span>Dashboard</a>
+                <a class="nav-item" href="#patients"><span>♙</span>Patients</a>
+                <a class="nav-item" href="#schedule"><span>♟</span>Schedule</a>
+                <a class="nav-item" href="#staff"><span>▣</span>Staff Accounts</a>
+                <a class="nav-item" href="#settings"><span>⚙</span>System Settings</a>
+            </nav>
+            <div class="nav-bottom"><a class="nav-item logout-link" href="../index.html"><span>↪</span>Logout</a></div>
+        </aside>
+        <main>
+            <div class="page-head">
+                <div>
+                    <div class="eyebrow">Administrator workspace</div>
+                    <h1>Clinic control center</h1>
+                    <p>Manage patients, schedules, staff access, and clinic settings.</p>
+                </div>
+            </div>
+
+            <section class="panel">
+                <div class="grid">
+                    <div class="metric"><strong id="admin-patients-today">0</strong><small>Patients Today</small></div>
+                    <div class="metric"><strong id="admin-waiting">0</strong><small>Waiting</small></div>
+                    <div class="metric"><strong id="admin-with-doctor">0</strong><small>With Doctor</small></div>
+                    <div class="metric"><strong id="admin-staff-count">0</strong><small>Active Staff</small></div>
+                </div>
+            </section>
+
+            <section class="panel section" id="patients">
+                <div class="section-title">
+                    <h2>Patient directory</h2><span class="eyebrow">Register and edit records</span>
+                </div>
+                <form class="form-grid" id="admin-patient-form">
+                    <label class="field">First name<input name="first_name" required></label>
+                    <label class="field">Last name<input name="last_name" required></label>
+                    <label class="field">Phone<input name="phone" type="tel"></label>
+                    <div class="form-actions"><button class="small" type="submit">Save Patient</button></div>
+                </form>
+                <p class="form-status" id="admin-patient-status" role="status"></p>
+                <div id="admin-patient-list">
+                    <p>Loading patients...</p>
+                </div>
+            </section>
+
+            <section class="panel section" id="schedule">
+                <div class="section-title">
+                    <h2>Schedule and visits</h2><span class="eyebrow">Today</span>
+                </div>
+                <div id="admin-schedule">
+                    <p>Loading schedule...</p>
+                </div>
+            </section>
+
+            <section class="panel section" id="staff">
+                <div class="section-title">
+                    <h2>Staff accounts</h2><span class="eyebrow">Access control</span>
+                </div>
+                <p>Use Supabase Auth Invite User to create a new login, then add the matching staff profile. Existing
+                    staff can be enabled or disabled here.</p>
+                <div id="admin-staff-list">
+                    <p>Loading staff...</p>
+                </div>
+            </section>
+
+            <section class="panel section" id="settings">
+                <div class="section-title">
+                    <h2>System settings</h2><span class="eyebrow">This browser</span>
+                </div>
+                <form class="form-grid" id="admin-settings-form">
+                    <label class="field">Clinic name<input name="clinic_name" value="ENT Clinic"></label>
+                    <label class="field">Default location<input name="clinic_location" value="Main Clinic"></label>
+                    <div class="form-actions"><button class="small" type="submit">Save Settings</button></div>
+                </form>
+                <p class="form-status" id="admin-settings-status" role="status"></p>
+            </section>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-client.js" defer></script>
+    <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/admin.js" defer></script>
+</body>
+
+</html>

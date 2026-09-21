@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | Today's Queue</title>
+    <link rel="stylesheet" href="../css/styles.css">
+<script src="../Javascript/native-push.js" defer></script><script src="../Javascript/native-camera.js" defer></script></head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">ENT</div>
+            <div><strong>ENT Clinic</strong><small>Secretary workspace</small></div>
+        </div>
+    </header>
+    <div class="layout">
+        <aside class="sidebar">
+            <p class="sidebar-title">ENT CLINIC</p>
+            <nav><a class="nav-item" href="index.html">Dashboard</a><a class="nav-item active" href="queue.html">Today's
+                    Patients / Queue</a><a class="nav-item" href="search.html">Patient Lists</a><a class="nav-item"
+                    href="register.html">Register Patient</a><a class="nav-item" href="schedule.html">Schedule</a><a class="nav-item" href="appointment.html">Add Appointment</a></nav>
+            <div class="nav-bottom"><a class="nav-item logout-link" href="../index.html">Logout</a></div>
+        </aside>
+        <main>
+            <div class="page-head">
+                <div>
+                    <div class="eyebrow">Clinic workspace</div>
+                    <h1>Today's queue</h1>
+                    <p>Patients in this queue are visible to the doctor.</p>
+                </div>
+            </div>
+            <section class="panel">
+                <div class="tabs" id="queue-tabs">
+                    <button class="tab active" type="button" data-status="all">All (0)</button>
+                    <button class="tab" type="button" data-status="waiting">Waiting (0)</button>
+                    <button class="tab" type="button" data-status="with_doctor">With Doctor (0)</button>
+                    <button class="tab" type="button" data-status="completed">Completed (0)</button>
+                </div>
+                <div class="queue-controls">
+                    <div class="search-row"><input id="queue-search" placeholder="Search patient..."
+                            aria-label="Search queue"></div>
+                    <input class="filter" id="queue-date" type="date" aria-label="Filter date">
+                </div>
+                <div id="queue-results">
+                    <p>Loading today's queue...</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="../Javascript/supabase-vendor.js" defer></script>
+    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-client.js" defer></script>
+    <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/queue.js" defer></script>
+</body>
+
+</html>

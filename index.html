@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="auth-page">
+    <main class="auth-wrap">
+        <section class="auth-card">
+            <div class="auth-heading">
+                <div class="brand-mark">MC</div>
+                <h1>Clinic</h1>
+                <p>Clinic management portal</p>
+            </div>
+            <form class="auth-form" id="login-form">
+                <label>Email<input id="login-email" type="email" placeholder="you@example.com" required></label>
+                <label>Password<input id="login-password" type="password" placeholder="Your password" required></label>
+                <button class="auth-submit" type="submit">Login</button>
+            </form>
+            <p class="auth-note">Sign in with the account created by your clinic administrator.</p>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="Javascript/supabase-config.js" defer></script>
+    <script src="Javascript/supabase-client.js" defer></script>
+    <script src="Javascript/auth.js" defer></script>
+</body>
+
+</html>

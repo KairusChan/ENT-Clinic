@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | Add Appointment</title>
+    <link rel="stylesheet" href="../css/styles.css">
+<script src="../Javascript/native-push.js" defer></script><script src="../Javascript/native-camera.js" defer></script></head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">ENT</div>
+            <div><strong>ENT Clinic</strong><small>Secretary workspace</small></div>
+        </div>
+    </header>
+    <div class="layout">
+        <aside class="sidebar">
+            <p class="sidebar-title">ENT CLINIC</p>
+            <nav><a class="nav-item" href="index.html">Dashboard</a><a class="nav-item" href="queue.html">Today's Patients / Queue</a><a class="nav-item" href="search.html">Patient Lists</a><a class="nav-item" href="register.html">Register Patient</a><a class="nav-item" href="schedule.html">Schedule</a><a class="nav-item active" href="appointment.html">Add Appointment</a></nav>
+            <div class="nav-bottom"><a class="nav-item logout-link" href="../index.html">Logout</a></div>
+        </aside>
+        <main>
+<div class="page-head"><div><h1>Add Appointment</h1><p>Add a consultation to today's patient queue.</p></div></div>
+<form id="appointment-form" class="panel form-grid">
+<div class="field patient-picker" id="patient-picker">
+<label for="patient-search">Patient</label>
+<input id="patient-search" data-patient-search type="search" placeholder="Search patient name..." autocomplete="off" required aria-describedby="patient-search-status">
+<input type="hidden" name="patient_id" id="booking-patient">
+<div data-patient-results class="patient-picker-results"></div>
+<small id="patient-search-status" role="status" aria-live="polite">Type a name, then choose a patient.</small>
+</div>
+<label class="field">Doctor<select name="doctor_id" id="appointment-doctor" required><option value="">Select doctor</option></select></label>
+<label class="field">Reason<input name="reason" required maxlength="500"></label>
+<label class="field">Type<input value="Consultation" readonly></label>
+<div class="form-actions"><button class="primary" type="submit">Add Consultation</button></div>
+<p id="appointment-status" class="form-status" role="status"></p>
+</form></main>
+    </div>
+    <script src="../Javascript/supabase-vendor.js" defer></script>
+    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-client.js" defer></script>
+    <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/patient-picker.js" defer></script>
+    <script src="../Javascript/appointment.js" defer></script>
+</body>
+
+</html>

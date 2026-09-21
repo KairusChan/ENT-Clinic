@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | My Schedule</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/schedule-page.css">
+<script src="../Javascript/native-push.js" defer></script><script src="../Javascript/native-camera.js" defer></script></head>
+
+<body class="doctor-schedule">
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">ENT</div>
+            <div><strong>ENT Clinic</strong><small>Doctor workspace</small></div>
+        </div>
+    </header>
+    <div class="layout">
+        <aside class="sidebar">
+            <p class="sidebar-title">ENT CLINIC</p>
+            <nav><a class="nav-item" href="index.html">Dashboard</a><a class="nav-item" href="queue.html">Today's
+                    Patients / Queue</a><a class="nav-item" href="search.html">Patient Lists</a><a
+                    class="nav-item active" href="schedule.html">My Schedule</a></nav>
+            <div class="nav-bottom"><a class="nav-item logout-link" href="../index.html">Logout</a></div>
+        </aside>
+        <main>
+            <div class="page-head">
+                <div>
+                    <div class="eyebrow">Doctor workspace</div>
+                    <h1>My schedule</h1>
+                    <p>Review your operations and events booked by the secretary.</p>
+                </div>
+            </div>
+            <div id="schedule-panel" class="schedule-board" data-schedule-kinds="operation,event"
+                data-schedule-view="cards">
+                <section class="schedule-main" aria-labelledby="schedule-heading">
+                    <div class="schedule-toolbar">
+                        <div>
+                            <h2 id="schedule-heading">Operations &amp; events</h2>
+                            <p>Your commitments for the selected day</p>
+                        </div>
+                        <label class="field schedule-date-field">Schedule date<input id="schedule-date" type="date"
+                                required></label>
+                    </div>
+                    <div class="schedule-key"><span><i class="key-operation"
+                                aria-hidden="true"></i>Operation</span><span><i class="key-event"
+                                aria-hidden="true"></i>Event</span><span class="schedule-timezone">All times are
+                            local</span></div>
+                    <div id="schedule-results" class="schedule-cards">
+                        <p>Loading schedule...</p>
+                    </div>
+                    <p id="schedule-status" role="status"></p>
+                </section>
+                <aside class="schedule-side" aria-label="Reminders and appointments">
+                    <section class="reminders-card">
+                        <div class="reminders-heading"><span aria-hidden="true">&#9719;</span>
+                            <h2>Reminders</h2>
+                        </div>
+                        <p id="schedule-live-status" role="status">Connecting live updates...</p>
+                        <button class="outline" type="button" id="enable-schedule-alerts">Enable browser alerts</button>
+                        <p id="schedule-alert-permission"></p>
+                        <div id="schedule-reminders" class="schedule-reminders" role="status" aria-live="polite">
+                            <p>Loading reminders...</p>
+                        </div>
+                    </section>
+                    <section class="appointments-card">
+                        <h3>Patient appointments</h3>
+                        <p>View your appointments from the dashboard.</p><a href="index.html">Go to dashboard <span
+                                aria-hidden="true">&rarr;</span></a>
+                    </section>
+                </aside>
+            </div>
+        </main>
+    </div>
+    <div id="schedule-alert-toast" class="schedule-alert-toast" role="alert" hidden>
+        <div><strong id="schedule-alert-title"></strong>
+            <p id="schedule-alert-body"></p>
+        </div>
+        <button type="button" id="dismiss-schedule-alert" class="outline"
+            aria-label="Dismiss notification">Dismiss</button>
+    </div>
+    <script src="../Javascript/supabase-vendor.js" defer></script>
+    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-client.js" defer></script>
+    <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/schedule-alerts.js" defer></script>
+    <script src="../Javascript/schedule.js" defer></script>
+</body>
+
+</html>

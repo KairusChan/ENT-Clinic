@@ -1,0 +1,6 @@
+{
+  "appId": "com.entclinic.app",
+  "appName": "ENT Clinic",
+  "webDir": "www",
+  "plugins": { "PushNotifications": { "presentationOptions": ["sound", "alert"] } }
+}
