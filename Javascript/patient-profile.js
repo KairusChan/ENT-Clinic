@@ -88,18 +88,97 @@ class PatientProfileController {
             return;
         }
 
-        this.visits.innerHTML = visits.length
-            ? visits.map((visit) => `<div class="patient-line">
-                <div><strong>${this.escapeHtml(visit.reason || 'Clinic visit')}</strong>
-                <small>${this.escapeHtml(visit.clinic_location || 'Clinic')} Â· ${this.formatDate(visit.checked_in_at)}</small></div>
-                <span class="status">${this.escapeHtml(this.formatStatus(visit.status))}</span>
-                ${window.entStaff?.role === 'doctor' && visit.doctor_id === window.entStaff.id && visit.kind === 'appointment' && ['with_doctor', 'completed'].includes(visit.status) ? `<a class="outline" href="consultation.html?visit_id=${encodeURIComponent(visit.id)}">${visit.status === 'completed' ? 'View Notes' : 'Continue Notes'}</a>` : ''}
-            </div>`).join('')
-            : '<p>No visits have been recorded for this patient.</p>';
+        if (!visits?.length) {
+            this.visits.innerHTML = '<p>No visits have been recorded for this patient.</p>';
+            return;
+        }
 
+        let notes = [];
+        let notesUnavailable = false;
+        try {
+            const result = await this.client.from('Notes').select('*').eq('patient_id', this.patientId);
+            if (result.error) throw result.error;
+            notes = result.data || [];
+        } catch {
+            notesUnavailable = true;
+        }
+        const notesByVisit = new Map(notes.map(note => [String(note.visit_id), note]));
+        this.visits.innerHTML = visits.map((visit, index) => this.renderVisit(
+            visit, notesByVisit.get(String(visit.id)), index === 0, notesUnavailable
+        )).join('');
+    }
+
+    renderVisit(visit, note, latest, notesUnavailable) {
+        const canOpenConsultation = window.entStaff?.role === 'doctor'
+            && visit.doctor_id === window.entStaff.id && visit.kind === 'appointment'
+            && ['with_doctor', 'completed'].includes(visit.status);
+        return `<details class="visit-history" ${latest ? 'open' : ''}>
+            <summary>${latest ? 'Latest visit: ' : ''}${this.escapeHtml(visit.reason || 'Clinic visit')}
+                <span class="status">${this.escapeHtml(this.formatStatus(visit.status))}</span>
+                <small>${this.escapeHtml(visit.clinic_location || 'Clinic')} &middot; ${this.formatDate(visit.checked_in_at)}</small>
+            </summary>
+            <div class="visit-notes"><h4>Doctor's notes</h4>
+                ${notesUnavailable ? `<p role="status">Unable to load doctor's notes. Please reload the profile to try again.</p>` : this.renderNotes(note, visit)}
+                ${canOpenConsultation ? `<a class="outline" href="consultation.html?visit_id=${encodeURIComponent(visit.id)}">${visit.status === 'completed' ? 'View Notes' : 'Continue Notes'}</a>` : ''}
+            </div>
+        </details>`;
+    }
+
+    renderNotes(note, visit = {}, documentView = window.entStaff?.role === 'secretary') {
+        if (!note) return '<p>No saved doctor notes are available for this visit.</p>';
+        const fields = [
+            ['subjective', 'Subjective'], ['objective', 'Objective'], ['history', 'History'],
+            ['assessment', 'Assessment'], ['plan', 'Plan'], ['recommendation', 'Recommendation'],
+            ['diagnostic', 'Medication'], ['rx', 'RX / Prescription'], ['referral', 'Referral'],
+            ['admitting_orders', 'Admitting Orders'], ['pf', 'PF']
+        ];
+        const sections = fields.filter(([key]) => String(note[key] ?? '').trim()).map(([key, label]) =>
+            `<section class="visit-note-section${key === 'pf' ? ' visit-note-fee' : ''}"><h5>${key === 'pf' ? 'Professional fee (PF)' : label}</h5><p class="visit-note-text">${this.escapeHtml(note[key])}</p></section>`
+        ).join('');
+        if (!sections) return '<p>No saved doctor notes are available for this visit.</p>';
+        const content = `<div class="visit-notes-grid">${sections}</div>`;
+        return documentView ? this.renderNoteDocument(content, visit) : content;
+    }
+
+    renderNoteDocument(content, visit) {
+        const patient = this.patient || {};
+        const date = new Date(visit.checked_in_at);
+        const validDate = !Number.isNaN(date.getTime());
+        const birth = new Date(`${patient.date_of_birth}T00:00:00`);
+        let age = '';
+        if (validDate && !Number.isNaN(birth.getTime()) && birth <= date) {
+            age = date.getFullYear() - birth.getFullYear();
+            if (date.getMonth() < birth.getMonth() || (date.getMonth() === birth.getMonth() && date.getDate() < birth.getDate())) age--;
+        }
+        const field = (label, value) => `<div class="note-document-field"><span>${label}:</span><span>${this.escapeHtml(value || '—')}</span></div>`;
+        const name = [patient.first_name, patient.middle_name, patient.last_name, patient.suffix].filter(Boolean).join(' ');
+        return `<article class="note-document" aria-label="Doctor's notes document">
+            <header class="note-document-header">
+                <img src="../css/images/clinic-caduceus.png" alt="Medical emblem">
+                <div><h3>ALDRIN BUTZ E. BAMBA, MD, DPBO-HNS</h3>
+                    <strong>Diplomate, Otorhinolaryngology - Head and Neck Surgery</strong>
+                    <div>Specialist in Ears, Nose, Throat, Sinuses, Mouth and Throat Diseases</div>
+                    <div>Tumor Surgery of the Head and Neck</div>
+                    <div>Voice, Swallowing and Breathing Disorders</div>
+                    <div>Diagnostic and Therapeutic Upper Aerodigestive Tract Endoscopy</div>
+                    <div>Hearing and Balance Disorders</div>
+                    <div>Cleft Lip and Palate Surgery</div>
+                    <div>Facial Trauma, Maxillofacial and Reconstructive Surgery of the Head and Neck</div>
+                </div>
+            </header>
+            <div class="note-document-patient">
+                ${field('Name', name)}
+                ${field('Date', validDate ? date.toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' }) : '')}
+                ${field('Address', patient.address)}
+                ${field('Age/Sex', [age, patient.sex || ''].filter(value => value !== '').join(' / '))}
+            </div>
+            <img class="note-document-rx" src="../css/images/prescription-rx.png" alt="Rx">
+            ${content}
+        </article>`;
     }
 
     renderPatient(patient) {
+        this.patient = patient;
         const fullName = [patient.first_name, patient.middle_name, patient.last_name, patient.suffix].filter(Boolean).join(' ');
         this.header.innerHTML = `<div class="avatar">${this.escapeHtml(patient.first_name.charAt(0).toUpperCase())}</div>
             <div><strong>${this.escapeHtml(fullName)}</strong><small>Patient #${this.escapeHtml(patient.id)}</small></div>`;
@@ -145,6 +224,7 @@ class PatientProfileController {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    if (!document.getElementById('patient-header')) return;
     if (!await window.entSessionReady) return;
     const controller = new PatientProfileController();
     controller.init();

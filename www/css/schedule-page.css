@@ -73,3 +73,20 @@
 #enable-schedule-alerts { margin-top: 14px; cursor: pointer; }
 #schedule-alert-permission { font-size: 11px; line-height: 1.6; margin-top: 10px; }
 @media(max-width:760px) { .schedule-alert-toast { right: 16px; bottom: 16px; } }
+.schedule-booking > summary { display: flex; align-items: center; gap: 16px; cursor: pointer; list-style: none; color: var(--ink); border-radius: 6px; }
+.schedule-booking > summary::-webkit-details-marker { display: none; }
+.schedule-booking > summary::marker { content: ''; }
+.schedule-booking > summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 6px; }
+.schedule-booking-icon { display: grid; place-items: center; flex: 0 0 48px; height: 48px; border-radius: 12px; background: #eaf5fd; color: var(--blue); }
+.schedule-booking-label { flex: 1; min-width: 0; font-size: 20px; font-weight: 600; line-height: 1.4; }
+.schedule-booking-hint { display: block; margin-top: 4px; font-size: 14px; font-weight: 400; color: var(--muted); }
+.schedule-booking-chevron { flex-shrink: 0; color: var(--muted); transition: transform 180ms ease; }
+.schedule-booking > summary:hover .schedule-booking-chevron { color: var(--blue); }
+.schedule-booking[open] > summary { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #e1eaf1; border-radius: 0; }
+.schedule-booking[open] .schedule-booking-chevron { transform: rotate(180deg); }
+@media (max-width: 600px) {
+    .schedule-booking > summary { gap: 12px; }
+    .schedule-booking-label { font-size: 18px; }
+    .schedule-booking-hint { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .schedule-booking-chevron { transition: none; } }

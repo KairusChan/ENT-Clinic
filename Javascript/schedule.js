@@ -110,6 +110,10 @@ class ScheduleController {
             status.textContent = 'Choose Operation or Event. Use Add Appointment for a consultation.';
             return;
         }
+        if (!fields.starts_at || !fields.ends_at) {
+            status.textContent = 'Saving without a time is not supported yet. No schedule has been saved.';
+            return;
+        }
         const start = new Date(fields.starts_at);
         const end = new Date(fields.ends_at);
         if (!Number.isFinite(start.getTime()) || !Number.isFinite(end.getTime()) || start < new Date() || end <= start) {
@@ -125,7 +129,7 @@ class ScheduleController {
         try {
             const { error } = await this.client.from('visits').insert({
                 patient_id: fields.patient_id || null, doctor_id: fields.doctor_id, kind: fields.kind,
-                reason: fields.reason.trim(), clinic_location: fields.clinic_location.trim(),
+                reason: fields.reason.trim(), clinic_location: fields.clinic_location?.trim() || null,
                 checked_in_at: start.toISOString(), ends_at: end.toISOString(),
                 reminder_minutes: 15, status: 'scheduled'
             });

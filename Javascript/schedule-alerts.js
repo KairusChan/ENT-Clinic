@@ -61,7 +61,9 @@ class ScheduleAlerts {
         if (window.entNativePush) {
             this.button.disabled = false;
             this.button.textContent = 'Enable phone notifications';
-            this.permission.textContent = 'Allow Android notifications for schedule updates, including when the app is closed.';
+            this.permission.textContent = window.entNativePush.mode === 'local'
+                ? 'Supabase alerts while the app is open, plus downloaded reminders when closed. Reopen to sync changes.'
+                : 'Allow Android notifications for schedule updates, including when the app is closed.';
             return;
         }
         if (!('Notification' in window) || !window.isSecureContext) {
@@ -78,8 +80,8 @@ class ScheduleAlerts {
         if (window.entNativePush) {
             this.button.disabled = true;
             try {
-                await window.entNativePush.enable();
-                this.permission.textContent = 'Phone registered. Background delivery requires the clinic push sender to be running.';
+                const message = await window.entNativePush.enable();
+                this.permission.textContent = message || 'Phone registered. Background delivery requires the clinic push sender to be running.';
             } catch (error) { this.permission.textContent = error.message; }
             finally { this.button.disabled = false; }
             return;

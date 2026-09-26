@@ -6,9 +6,16 @@ class PatientSearchController {
         this.status = document.getElementById('patient-results-status');
         this.client = window.entSupabase;
         this.patients = [];
+        this.pagination = document.getElementById('patient-pagination');
+        this.page = 0;
+        this.pageSize = this.pagination ? 3 : Infinity;
     }
 
     init() {
+        if (this.pagination) {
+            document.getElementById('patient-previous').addEventListener('click', () => this.renderResults(this.page - 1));
+            document.getElementById('patient-next').addEventListener('click', () => this.renderResults(this.page + 1));
+        }
         this.searchButton.addEventListener('click', () => this.renderResults());
         this.searchInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
@@ -38,8 +45,10 @@ class PatientSearchController {
         this.renderResults();
     }
 
-    renderResults() {
+    renderResults(page = 0) {
         const searchTerm = this.searchInput.value.trim().toLowerCase();
+        if (searchTerm !== this.lastSearchTerm) page = 0;
+        this.lastSearchTerm = searchTerm;
         const matchingPatients = this.patients.filter((patient) => {
             const searchableText = [
                 patient.id,
@@ -56,13 +65,23 @@ class PatientSearchController {
             return searchableText.includes(searchTerm);
         });
 
+        this.page = Math.max(0, Math.min(page, Math.ceil(matchingPatients.length / this.pageSize) - 1));
+        const start = this.pagination ? this.page * this.pageSize : 0;
+        if (this.pagination) {
+            this.pagination.hidden = matchingPatients.length <= this.pageSize;
+            document.getElementById('patient-page-status').textContent =
+                `${start + 1}\u2013${Math.min(start + this.pageSize, matchingPatients.length)} of ${matchingPatients.length} patients`;
+            document.getElementById('patient-previous').disabled = this.page === 0;
+            document.getElementById('patient-next').disabled = start + this.pageSize >= matchingPatients.length;
+        }
+
         if (!matchingPatients.length) {
             this.results.innerHTML = '<p id="patient-results-status">No patient records found.</p>';
             this.status = document.getElementById('patient-results-status');
             return;
         }
 
-        this.results.innerHTML = matchingPatients.map((patient) => this.renderPatient(patient)).join('');
+        this.results.innerHTML = matchingPatients.slice(start, start + this.pageSize).map((patient) => this.renderPatient(patient)).join('');
     }
 
     renderPatient(patient) {

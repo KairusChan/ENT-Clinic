@@ -1,0 +1,14 @@
+.print-queue-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+.print-queue-page .result { flex-wrap: wrap; gap: 12px; }
+.print-queue-page .result-info { min-width: 180px; }
+.print-queue-page .visit-note-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+#print-queue-output { display: none; }
+@media print {
+    @page { size: A4; margin: 15mm; }
+    body.print-queue-page > :not(#print-queue-output) { display: none !important; }
+    #print-queue-output { display: block !important; }
+    .print-queue-page #print-queue-output .note-document { max-width: none; min-height: 0; margin: 0; padding: 0; border: 0; box-shadow: none; }
+    #print-queue-output .note-document-header, #print-queue-output .note-document-patient { break-inside: avoid; }
+    #print-queue-output .visit-note-section h5 { break-after: avoid; }
+    #print-queue-output .visit-note-text { orphans: 3; widows: 3; }
+}

@@ -460,6 +460,10 @@ th {
     grid-column: 1/-1
 }
 
+.patient-list-actions {
+    margin-top: 22px;
+}
+
 .outline {
     padding: 9px 13px;
     border: 1px solid #b7c8d3;
@@ -741,6 +745,127 @@ body.auth-page {
     }
 }
 
+/* Use viewport width so tablet previews and tablets with a mouse also match. */
+@media (min-width: 601px) and (max-width: 1366px) {
+    .auth-page .auth-wrap {
+        width: min(680px, 86%);
+        margin: 6vh auto 40px;
+    }
+
+    .auth-page .auth-card {
+        padding: clamp(32px, 4.5vw, 48px);
+        border-radius: 14px;
+    }
+
+    .auth-page .auth-heading {
+        margin-bottom: 30px;
+    }
+
+    .auth-page .auth-heading .brand-mark {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 16px;
+        font-size: 21px;
+    }
+
+    .auth-page .auth-heading h1 {
+        font-size: 40px;
+    }
+
+    .auth-page .auth-heading p {
+        font-size: 18px;
+    }
+
+    .auth-page .auth-form {
+        gap: 24px;
+    }
+
+    .auth-page .auth-form label {
+        gap: 8px;
+        font-size: 16px;
+    }
+
+    .auth-page .auth-form input,
+    .auth-page .auth-form select {
+        min-height: 60px;
+        padding: 14px 16px;
+        border-radius: 7px;
+        font-size: 18px;
+    }
+
+    .auth-page .auth-submit {
+        min-height: 60px;
+        border-radius: 7px;
+        font-size: 20px;
+    }
+
+    .auth-page .auth-note {
+        margin-top: 24px;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+}
+
+@media (min-width: 1367px) {
+    .auth-page .auth-wrap {
+        width: min(720px, 90%);
+        margin: 8vh auto 48px;
+    }
+
+    .auth-page .auth-card {
+        padding: 48px 56px;
+        border-radius: 16px;
+    }
+
+    .auth-page .auth-heading {
+        margin-bottom: 32px;
+    }
+
+    .auth-page .auth-heading .brand-mark {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 18px;
+        font-size: 22px;
+    }
+
+    .auth-page .auth-heading h1 {
+        font-size: 42px;
+    }
+
+    .auth-page .auth-heading p {
+        font-size: 18px;
+    }
+
+    .auth-page .auth-form {
+        gap: 24px;
+    }
+
+    .auth-page .auth-form label {
+        gap: 9px;
+        font-size: 16px;
+    }
+
+    .auth-page .auth-form input,
+    .auth-page .auth-form select {
+        min-height: 60px;
+        padding: 14px 18px;
+        border-radius: 8px;
+        font-size: 18px;
+    }
+
+    .auth-page .auth-submit {
+        min-height: 62px;
+        border-radius: 8px;
+        font-size: 20px;
+    }
+
+    .auth-page .auth-note {
+        margin-top: 26px;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+}
+
 .schedule-reminders {
     padding: 14px;
     margin: 12px 0;
@@ -801,3 +926,88 @@ button:disabled {
 .preset-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
 .preset-buttons button[aria-expanded="true"] { background: #e5f3ff; border-color: var(--blue); }
 .note-section[hidden] { display: none; }
+
+/* Zero vertical page margins suppress browser-added headers and footers.
+   Content spacing is supplied inside the printable document instead. */
+@page consultation-standard { margin: 0; }
+/* Print only the selected saved consultation section. */
+#consultation-printout { display: none; }
+.note-print-button { margin-top: 12px; }
+@media print {
+    body.consultation-document > :not(#consultation-printout) { display: none !important; }
+    #consultation-printout { page: consultation-standard; display: block !important; color: #000; background: #fff; font: 12pt Arial, sans-serif; }
+    #consultation-printout h1 { font-size: 20pt; }
+    #consultation-printout h2 { font-size: 16pt; margin-bottom: 24px; }
+    #consultation-printout pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.5; margin-top: 28px; padding-left: 8ch; tab-size: 4; }
+    body.consultation-document { background: #fff; margin: 0; padding: 20px; }
+}
+
+/* Medication and referral occupy the right half of landscape US Letter.
+   Page margins also keep continuation pages within the same half. */
+@page consultation-half-letter {
+    size: 11in 8.5in;
+    margin: 0 0.3in 0 5.8in;
+}
+@media print {
+    body.consultation-document:has(.letterhead-sheet) { padding: 0; }
+    #consultation-printout:has(.letterhead-sheet) { page: consultation-half-letter; }
+    #consultation-printout .letterhead-sheet { box-sizing: border-box; width: 100%; min-height: 8.45in; padding: 0.3in 0; box-decoration-break: clone; -webkit-box-decoration-break: clone; display: flex; flex-direction: column; font: 8pt Arial, sans-serif; }
+    #consultation-printout .letterhead-header { display: flex; gap: 2mm; align-items: center; border-bottom: 3px double #254d82; padding-bottom: 2mm; break-inside: avoid; }
+    #consultation-printout .letterhead-symbol { display: block; width: 17mm; height: 22mm; object-fit: contain; flex-shrink: 0; }
+    #consultation-printout .letterhead-heading { flex: 1; min-width: 0; text-align: center; font-size: 5.8pt; line-height: 1.25; }
+    #consultation-printout .letterhead-heading h1 { font-size: 9.5pt; line-height: 1.15; margin: 0 0 1mm; }
+    #consultation-printout .letterhead-heading strong { font-size: 6.5pt; }
+    #consultation-printout .letterhead-patient { display: grid; grid-template-columns: 2.2fr 1fr; gap: 4mm 2mm; margin: 6mm 0 4mm; font-size: 7pt; break-inside: avoid; }
+    #consultation-printout .letterhead-field { display: flex; align-items: baseline; gap: 1mm; min-width: 0; }
+    #consultation-printout .letterhead-field > span:first-child { white-space: nowrap; }
+    #consultation-printout .letterhead-value { flex: 1; min-width: 0; min-height: 3mm; border-bottom: 1px solid #222; overflow-wrap: anywhere; }
+    #consultation-printout .letterhead-body { flex: 1; }
+    #consultation-printout .letterhead-rx { display: block; width: 10mm; height: 13mm; object-fit: contain; object-position: left center; }
+    #consultation-printout .letterhead-content { font: 10pt/1.5 Arial, sans-serif; margin: 3mm 0 6mm; white-space: pre-wrap; overflow-wrap: anywhere; orphans: 3; widows: 3; }
+    #consultation-printout .letterhead-closing { break-inside: avoid; padding-top: 5mm; }
+    #consultation-printout .letterhead-signature { width: 55mm; margin-left: auto; font-size: 7pt; line-height: 1.5; }
+    #consultation-printout .letterhead-signature-name { display: block; border-top: 1px solid #222; padding-top: 1mm; text-align: center; }
+    #consultation-printout .letterhead-clinics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1mm; margin-top: 5mm; }
+    #consultation-printout .letterhead-clinic { border: 1px solid #333; border-radius: 1mm; padding: 1.5mm 1mm; text-align: center; font-size: 5pt; line-height: 1.35; overflow-wrap: anywhere; }
+}
+
+.visit-history { border-bottom: 1px solid var(--line); padding: 16px 0; }
+.visit-history summary { cursor: pointer; font-weight: 600; overflow-wrap: anywhere; }
+.visit-history summary small { display: block; color: var(--muted); margin-top: 8px; }
+.visit-history .status { margin-left: 8px; }
+.visit-notes { padding: 12px 0; }
+.visit-notes h5 { margin: 16px 0 6px; font-size: 14px; }
+.visit-note-text { white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 0; }
+
+.patient-pagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 14px; }
+.patient-pagination > span { color: var(--muted); font-size: 13px; }
+.patient-pagination > div { display: flex; gap: 8px; }
+.patient-pagination button { min-height: 40px; font-size: 13px; cursor: pointer; }
+.patient-pagination button:disabled { cursor: default; }
+
+.secretary-profile .visit-history { padding: 16px 0; }
+.secretary-profile .visit-history summary { padding: 12px; border-radius: 8px; line-height: 1.6; }
+.secretary-profile .visit-history[open] summary { background: #edf5fa; }
+.secretary-profile .visit-history summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.secretary-profile .visit-notes { padding: 20px 12px 8px; }
+.secretary-profile .visit-notes > h4 { margin: 0 0 16px; font-size: 17px; color: var(--ink); }
+.secretary-profile .visit-notes-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.secretary-profile .visit-note-section { min-width: 0; padding: 18px; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; }
+.secretary-profile .visit-note-section h5 { margin: 0 0 10px; color: #52697d; font-size: 13px; font-weight: 700; }
+.secretary-profile .visit-note-text { margin: 0; font-size: 15px; line-height: 1.7; color: var(--ink); }
+.secretary-profile .visit-note-fee { grid-column: 1 / -1; background: #edf7f5; border-color: #c9e5dd; }
+.secretary-profile .visit-note-fee h5 { color: #286d5b; }
+.secretary-profile .visit-note-fee .visit-note-text { font-size: 20px; font-weight: 700; color: #205a4a; }
+@media (max-width: 760px) {
+    .secretary-profile .visit-notes-grid { grid-template-columns: minmax(0, 1fr); }
+    .secretary-profile .visit-notes { padding: 18px 0 8px; }
+    .secretary-profile .visit-note-section { padding: 16px; }
+}
+
+/* Secretary professional fees */
+.pf-table-wrap { overflow-x: auto; }
+.pf-table { font-size: 13px; }
+.pf-table caption { text-align: left; padding: 16px 7px; font-weight: 700; }
+.pf-table td { vertical-align: top; }
+.pf-table .pf-charge { white-space: pre-wrap; overflow-wrap: anywhere; min-width: 180px; max-width: 360px; font-weight: 600; }
+.pf-table .pf-updated { background: #eef8f2; }

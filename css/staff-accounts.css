@@ -1,0 +1,4 @@
+.account-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+#account-list .result { flex-wrap: wrap; gap: 12px; }
+#password-form[hidden] { display: none; }
+#account-status { white-space: pre-wrap; }

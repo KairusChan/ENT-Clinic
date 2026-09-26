@@ -1,8 +1,25 @@
 # Android notifications setup
 
+## Supabase-only Android notifications (no Firebase required)
+
+Builds without `android/app/google-services.json` now use Capacitor Local Notifications. Install `artifacts/ENT-Clinic-debug.apk`, sign in as the doctor, and use **Enable phone notifications** on any doctor page. Allow Android notification permission, then tap **Send test notification**.
+
+The wrapper checks Supabase for the signed-in doctor?s queue and operations/events every 30 seconds while the WebView runs; Realtime accelerates this where enabled. New waiting patients produce a generic phone alert. Schedule changes produce an alert, and the next 30 days of operation/event reminders are downloaded to Android. No new database migration or server secret is required for this mode. Existing authenticated visit permissions still apply.
+
+Downloaded reminders can fire after the app is closed, with timing subject to Android power management. New bookings, queue arrivals, and cancellations cannot sync while the app is fully closed. Open the app to refresh reminders; an offline cancellation may leave an outdated reminder on the phone until the next successful sync. Sign-out cancels downloaded reminders. This is local notification delivery, not closed-app remote push.
+
+Verification: use two accounts/devices; enable doctor notifications and create a waiting appointment as secretary. Keep a doctor page open and confirm the phone alert within 30 seconds. Book an operation, sync the doctor app, close it, and check its downloaded reminder. Reopen after rescheduling/cancelling and verify the previous reminder is replaced/removed. Test sign-out and denied permissions.
+
+The remaining sections describe the optional Firebase upgrade for receiving new server updates while closed.
+
 The browser page now supports live in-app alerts for operation/event changes and due reminders. Its optional browser notifications require permission and a running page. The Android app uses Capacitor Push Notifications and FCM, which can deliver notification messages while the app is backgrounded or closed. Android settings, force-stop, connectivity and power restrictions can delay or suppress delivery.
 
 ## Database
+
+For a new Supabase project, run `database/01-core-schema.sql`, then
+`database/02-scheduling.sql`, `database/03-notifications.sql`, and
+`database/04-clinical-records.sql` in that order. Existing projects can
+continue using the incremental migrations below.
 
 Run the existing scheduling/event migrations first, followed by:
 
@@ -43,10 +60,10 @@ Jobs use a five-minute claim lease and up to eight retries. Sent device tokens a
 
 Local checks do not prove device delivery. Firebase configuration, database migrations, deployment, Android build/signing, and real-device notification tests remain environment setup steps.
 
-Official references: https://capacitorjs.com/docs/apis/push-notifications and https://firebase.google.com/docs/cloud-messaging/android/receive-messages
+Official references: [Capacitor Push Notifications](https://capacitorjs.com/docs/apis/push-notifications) and [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/android/receive-messages)
 
 ## Build the test APK from this workspace
 
 The project-local Java toolchain is under `.build-tools/java`. Run `./scripts/build-debug-apk.ps1` from PowerShell to rebuild web assets, sync Capacitor, and compile the debug APK. The script copies the result to `artifacts/ENT-Clinic-debug.apk`.
 
-If `android/app/google-services.json` is absent, the build disables native push registration and displays a setup message when phone notifications are requested. Login and clinic screens remain available. Add the Firebase file and rebuild to enable native push. This guard is separate from the server setup needed for background delivery.
+If `android/app/google-services.json` is absent, the build uses the Supabase-only local notification mode above. Add the Firebase file and configure the server sender to switch to remote push for new updates while closed.

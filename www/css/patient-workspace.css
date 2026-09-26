@@ -1,0 +1,50 @@
+/* Patient search heading and registration below the results. */
+.patient-directory-heading { gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.patient-directory-heading h2 { margin: 0; }
+.patient-register-action { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 16px; color: var(--muted); }
+.patient-register-action > a { display: inline-flex; align-items: center; justify-content: center; color: var(--muted); background: #fff; text-decoration: none; white-space: nowrap; }
+.patient-register-action > a:hover { color: var(--blue); background: #f3f8fc; }
+.patient-register-action > a:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+/* Read-only notes use aligned labels and values, in the doctor's section order. */
+.secretary-profile .visit-notes { padding: 20px 0 8px; }
+.secretary-profile .visit-notes-grid { display: block; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+.secretary-profile .visit-note-section { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 20px; padding: 16px 20px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: #fff; align-items: start; }
+.secretary-profile .visit-note-section:nth-child(even) { background: #f8fafc; }
+.secretary-profile .visit-note-section:last-child { border-bottom: 0; }
+.secretary-profile .visit-note-section h5 { margin: 0; font-size: 14px; line-height: 1.65; color: #435c72; }
+.secretary-profile .visit-note-text { margin: 0; line-height: 1.65; color: var(--ink); }
+.secretary-profile .visit-note-section.visit-note-fee { background: #edf7f5; align-items: center; }
+.secretary-profile .visit-note-fee h5 { color: #286d5b; }
+.secretary-profile .visit-note-fee .visit-note-text { font-size: 18px; }
+@media (max-width: 600px) {
+    .patient-directory-heading { align-items: stretch; }
+    .secretary-profile .visit-note-section { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 14px 16px; }
+}
+
+/* Paper-style preview inside the existing visit dropdown. */
+.secretary-profile .note-document { box-sizing: border-box; max-width: 700px; min-height: 820px; margin: 0 auto 20px; padding: 26px; background: white; color: #111; border: 1px solid #dbe2e8; box-shadow: 0 3px 14px #17354d12; font-family: Arial, sans-serif; }
+.note-document-header { display: flex; align-items: center; gap: 16px; padding-bottom: 14px; border-bottom: 3px double #254d82; }
+.note-document-header > img { width: 70px; height: 90px; object-fit: contain; }
+.note-document-header > div { flex: 1; text-align: center; font-size: 9px; line-height: 1.35; }
+.note-document-header h3 { margin: 0 0 5px; font-size: 14px; color: #111; }
+.note-document-header strong { font-size: 10px; }
+.note-document-patient { display: grid; grid-template-columns: 2fr 1fr; gap: 16px 12px; margin: 26px 0; font-size: 11px; }
+.note-document-field { display: flex; gap: 5px; align-items: baseline; min-width: 0; }
+.note-document-field > span:first-child { white-space: nowrap; }
+.note-document-field > span:last-child { flex: 1; border-bottom: 1px solid #222; overflow-wrap: anywhere; min-width: 0; }
+.note-document-rx { width: 38px; height: 46px; object-fit: contain; }
+.secretary-profile .note-document .visit-notes-grid { border: 0; border-radius: 0; margin: 16px 0 40px; padding-left: 48px; }
+.secretary-profile .note-document .visit-note-section { display: block; padding: 0 0 20px; border: 0; background: transparent; }
+.secretary-profile .note-document .visit-note-section h5 { font: bold 12px/1.5 Arial, sans-serif; color: #111; margin-bottom: 5px; }
+.secretary-profile .note-document .visit-note-text { font: 14px/1.65 Arial, sans-serif; color: #111; }
+@media (max-width: 600px) {
+    .secretary-profile .note-document { padding: 16px 12px; min-height: 600px; }
+    .note-document-header { gap: 8px; }
+    .note-document-header > img { width: 44px; height: 65px; }
+    .note-document-header h3 { font-size: 11px; }
+    .note-document-header > div { font-size: 8px; }
+    .note-document-header strong { font-size: 9px; }
+    .note-document-patient { grid-template-columns: minmax(0, 1fr); }
+    .secretary-profile .note-document .visit-notes-grid { padding-left: 20px; }
+}

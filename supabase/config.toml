@@ -1,2 +1,6 @@
 ﻿[functions.send-schedule-push]
 verify_jwt = false
+
+[functions.manage-staff]
+# Bearer tokens are validated with Auth inside the handler.
+verify_jwt = false

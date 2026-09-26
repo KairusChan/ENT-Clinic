@@ -1,12 +1,23 @@
 # Scheduling and role setup
 
+## Database SQL files
+
+For a new Supabase project, run these files in order in the Supabase SQL editor:
+
+1. `database/01-core-schema.sql`
+2. `database/02-scheduling.sql`
+3. `database/03-notifications.sql`
+4. `database/04-clinical-records.sql`
+
+The files in `migrations/` are retained as the historical, incremental path for an existing database. The optional Cron section in `database/03-notifications.sql` requires the Vault secrets described in `supabase/schedule-push-cron.sql`.
+
 ## Doctor consultation notes
 
 Run `migrations/20260913_consultation_notes.sql` in the Supabase SQL editor after the existing scheduling/role migrations, before installing the consultation update. The exact table name is `public."Notes"` (capital N), with `subjective`, `objective`, `history`, `assessment`, `plan`, `rx`, `referral`, `recommendation`, and `admitting_orders`, plus visit/patient/doctor IDs and a saved timestamp. No remote database migration was applied from this workspace.
 
 Secretary Add Appointment creates a waiting consultation for the selected doctor. That doctor's Todayâ€™s Patients page offers **Accept Patient**, which opens `Doctor/consultation.html`. **Save Notes** saves the note and completes the visit in one database transaction, then returns to the queue. **Continue Notes** reopens an accepted visit; **View Notes** opens a saved note from the queue or patient profile. Unsaved notes remain only in the open form; leaving prompts before discarding them. Saved notes are editable by the assigned doctor after running `migrations/20260913_edit_consultation_notes.sql`. Save Changes updates the note while keeping the visit completed; conflicting changes from another window are rejected. A failed save retains the text for retry, and identical retries cannot create duplicate notes.
 
-Only the active assigned doctor can accept or save a consultation. Doctors can read their own saved notes; administrators can read notes; secretaries cannot access clinical notes or skip directly to completing a consultation. Existing completed visits without structured notes remain available. Saved notes prevent deletion or reassignment of their linked visit, patient, or doctor. Tests mock database responses; verify the SQL migration and real account permissions in Supabase before use.
+Only the active assigned doctor can accept or save a consultation. Doctors can read their own saved notes; administrators can read notes; active secretaries can read saved notes in patient profiles but cannot edit them or skip directly to completing a consultation. Existing completed visits without structured notes remain available. Saved notes prevent deletion or reassignment of their linked visit, patient, or doctor. Tests mock database responses; verify the SQL migration and real account permissions in Supabase before use.
 
 The secretary workspace now has separate **Add Appointment** and **Schedule** pages. Add Appointment searches for a patient and accepts a doctor and reason, with a fixed Consultation type; saving adds the consultation to today's waiting queue. Schedule books operations and events with start/end times, location, doctor and a procedure/event title. Events may omit a patient. Patient search is also available on Schedule. The existing database `appointment` kind is displayed as Consultation so previous records and doctor filters remain compatible; this page split requires no additional database migration.
 
@@ -27,7 +38,27 @@ Patient identity and record pictures: run `migrations/20260913_patient_identity_
 
 Pictures are optional, with up to four per patient. JPEG/PNG/WebP inputs up to 10 MB are resized to at most 1600 pixels and saved as JPEG with the patient under the existing patient access policies. Secretary profiles can upload, remove or retake pictures and then select **Save pictures**; doctors can view them. Capture opens the device camera on supported mobile browsers; desktop browsers may offer a file picker. Retaking replaces the selected picture only after a successful selection. Run `npm run build:mobile` to rebuild packaged web assets.
 
-
 Cancellation deletion: run `migrations/20260913_delete_cancelled_visits.sql` before installing this update. Cancel in the secretary queue or schedule now permanently deletes the visit row through `cancel_visit`, and removes linked pending push jobs. The migration also permanently deletes existing cancelled visits. Patient records are retained. Saved consultation notes prevent deletion of their linked visits. This migration has not been applied to the remote database from this workspace.
 
 Consultation presets: run `migrations/20260914_consultation_presets.sql` after the edit-notes migration and before serving this update. This adds PF and Diagnostic storage and updates both save procedures. Click a section preset to reveal and focus its field; saved sections reopen automatically. History and RX / Prescription are removed from the form; previously saved values remain preserved when editing other sections. Existing notes are preserved. This migration has not been applied to the remote database from this workspace.
+
+Secretary visit history: apply `migrations/20260924_secretary_visit_notes.sql` to an existing database to enable read-only access to saved doctor notes. Patient profiles expand the latest visit and include all saved note sections. New database setup files include this policy. This migration has not been applied to the remote database from this workspace.
+
+
+## Professional fees (PF)
+
+For an existing installation showing the PF setup message, run `migrations/20260925_professional_fees_setup.sql` in the Supabase SQL Editor. It adds the missing PF/diagnostic columns, updates both note-saving procedures, and allows active secretaries to read the saved PF. The repair is transactional and can be rerun; existing notes are preserved. This remote migration has not been applied from this workspace.
+
+Doctor: enter the charge in PF and select Save Notes (or Save Changes). The save completes before returning to the doctor queue. Secretary: open Professional Fees (PF) to see the patient and PF to collect; the list refreshes every 30 seconds or with Refresh fees. Blank PF says Waiting for doctor; zero is a valid free consultation. This page does not track payments. To print, the doctor can reopen View Notes from the queue.
+
+## Staff account management
+
+1. Apply `migrations/20260925_staff_accounts.sql` to an existing Supabase database. For fresh installations, run `database/05-staff-accounts.sql` after files 01–04 (also included at the end of `supabase-schema.sql`). Existing staff roles are preserved. The migration prevents public signup metadata from granting clinic roles and protects doctor attribution on visits.
+2. Deploy the server function with `supabase functions deploy manage-staff --project-ref YOUR_PROJECT_REF`. It uses Supabase's server environment variables `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`; never put the service-role key in browser configuration. The handler verifies each bearer token and checks the active staff role. Admin account operations follow the [Supabase server-only Auth API](https://supabase.com/docs/reference/javascript/auth-admin-createuser).
+3. Sign in as an existing administrator and open **Manage Accounts** (`Admin/accounts.html`) to create doctors/secretaries, change their passwords, or delete them. Doctors use **Create Secretary** (`Doctor/accounts.html`). Secretaries created by doctors have the existing clinic-wide secretary permissions. No email is sent; provide the login details securely.
+
+To bootstrap the first administrator, create their Auth user in the Supabase dashboard, then insert its matching UUID into `public.staff` with `full_name`, `role = 'admin'`, and `is_active = true` using the SQL editor. Public signup cannot create an administrator. Administrator accounts cannot be deleted or reset through these pages.
+
+Deletion removes the Auth login and its staff profile. Linked clinical records and stored-file ownership can block deletion; use the dashboard's Disable action to revoke clinic access while retaining history. Password changes do not promise immediate invalidation of every existing access token.
+
+Validation: `npm test` and `npm run build:mobile`. The account API tests use mocks; apply the migration and deploy the function before verifying with real accounts. This update does not itself deploy the function or modify the remote database.

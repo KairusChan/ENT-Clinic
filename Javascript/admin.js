@@ -11,8 +11,8 @@ class AdminController {
     }
 
     init() {
-        this.patientForm.addEventListener('submit', (event) => this.savePatient(event));
-        this.settingsForm.addEventListener('submit', (event) => this.saveSettings(event));
+        this.patientForm?.addEventListener('submit', (event) => this.savePatient(event));
+        this.settingsForm?.addEventListener('submit', (event) => this.saveSettings(event));
         this.loadData();
     }
 
@@ -22,7 +22,11 @@ class AdminController {
             return;
         }
 
-        await Promise.all([this.loadPatients(), this.loadVisits(), this.loadStaff()]);
+        const tasks = [];
+        if (this.patientList) tasks.push(this.loadPatients());
+        if (this.schedule || document.getElementById('admin-patients-today')) tasks.push(this.loadVisits());
+        if (this.staffList || document.getElementById('admin-staff-count')) tasks.push(this.loadStaff());
+        await Promise.all(tasks);
     }
 
     async loadPatients() {
@@ -73,7 +77,7 @@ class AdminController {
             .order('checked_in_at', { ascending: true });
 
         if (error) {
-            this.schedule.innerHTML = `<p>${this.escapeHtml(error.message)}</p>`;
+            this.setAllStatus(error.message);
             return;
         }
 
@@ -81,9 +85,10 @@ class AdminController {
         data.forEach((visit) => {
             if (counts[visit.status] !== undefined) counts[visit.status] += 1;
         });
-        document.getElementById('admin-patients-today').textContent = data.length;
-        document.getElementById('admin-waiting').textContent = counts.waiting;
-        document.getElementById('admin-with-doctor').textContent = counts.with_doctor;
+        this.setMetric('admin-patients-today', data.length);
+        this.setMetric('admin-waiting', counts.waiting);
+        this.setMetric('admin-with-doctor', counts.with_doctor);
+        if (!this.schedule) return;
         this.schedule.innerHTML = data.length ? data.map((visit) => this.renderVisit(visit)).join('') : '<p>No visits scheduled today.</p>';
         this.schedule.querySelectorAll('.admin-status').forEach((select) => {
             select.addEventListener('change', () => this.updateVisit(select));
@@ -109,10 +114,11 @@ class AdminController {
     async loadStaff() {
         const { data, error } = await this.client.from('staff').select('id, full_name, role, is_active').order('full_name');
         if (error) {
-            this.staffList.innerHTML = `<p>${this.escapeHtml(error.message)}</p>`;
+            this.setAllStatus(error.message);
             return;
         }
-        document.getElementById('admin-staff-count').textContent = data.filter((staff) => staff.is_active !== false).length;
+        this.setMetric('admin-staff-count', data.filter((staff) => staff.is_active !== false).length);
+        if (!this.staffList) return;
         this.staffList.innerHTML = data.length ? data.map((staff) => `<div class="result">
             <div class="result-info"><strong>${this.escapeHtml(staff.full_name)}</strong><small>${this.escapeHtml(staff.role)}</small></div>
             <span class="status ${staff.is_active ? 'doctor' : 'completed'}">${staff.is_active ? 'Active' : 'Disabled'}</span>
@@ -145,9 +151,14 @@ class AdminController {
     }
 
     setAllStatus(message) {
-        this.patientList.innerHTML = `<p>${this.escapeHtml(message)}</p>`;
-        this.schedule.innerHTML = `<p>${this.escapeHtml(message)}</p>`;
-        this.staffList.innerHTML = `<p>${this.escapeHtml(message)}</p>`;
+        for (const container of [this.patientList, this.schedule, this.staffList, document.getElementById('admin-dashboard-status')]) {
+            if (container) container.textContent = message;
+        }
+    }
+
+    setMetric(id, value) {
+        const metric = document.getElementById(id);
+        if (metric) metric.textContent = value;
     }
 
     escapeHtml(value) {
