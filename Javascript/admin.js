@@ -6,13 +6,10 @@ class AdminController {
         this.patientList = document.getElementById('admin-patient-list');
         this.schedule = document.getElementById('admin-schedule');
         this.staffList = document.getElementById('admin-staff-list');
-        this.settingsForm = document.getElementById('admin-settings-form');
-        this.settingsStatus = document.getElementById('admin-settings-status');
     }
 
     init() {
         this.patientForm?.addEventListener('submit', (event) => this.savePatient(event));
-        this.settingsForm?.addEventListener('submit', (event) => this.saveSettings(event));
         this.loadData();
     }
 
@@ -45,9 +42,28 @@ class AdminController {
                 <div class="avatar">${this.escapeHtml(patient.first_name.charAt(0).toUpperCase())}</div>
                 <div class="result-info"><strong>${this.escapeHtml([patient.first_name, patient.middle_name, patient.last_name, patient.suffix].filter(Boolean).join(' '))}</strong>
                 <small>${this.escapeHtml(patient.phone || patient.email || 'No contact details')}</small></div>
-                <a class="outline" href="../Doctor/profile.html?id=${patient.id}">View</a>
+                <a class="outline" href="profile.html?id=${patient.id}">View</a><button type="button" class="outline admin-delete-patient" data-id="${patient.id}" data-name="${this.escapeHtml([patient.first_name, patient.last_name].filter(Boolean).join(' '))}">Delete</button>
             </div>`).join('')
             : '<p>No patient records yet.</p>';
+        this.patientList.querySelectorAll('.admin-delete-patient').forEach(button => button.addEventListener('click', () => this.deletePatient(button)));
+    }
+
+    async deletePatient(button) {
+        if (button.disabled || window.entStaff?.role !== 'admin') return;
+        const reason = window.prompt('Reason for deleting ' + button.dataset.name + ' (up to 1000 characters):');
+        if (!reason?.trim()) return;
+        if (reason.trim().length > 1000) { this.patientStatus.textContent = 'Deletion reason must be at most 1000 characters.'; return; }
+        if (!window.confirm('Permanently delete ' + button.dataset.name + ' and their appointments? Saved consultation notes must be transferred first.')) return;
+        button.disabled = true;
+        try {
+            const {error} = await this.client.rpc('admin_delete_patient', {p_patient_id: button.dataset.id, p_reason: reason.trim()});
+            if (error) throw error;
+            this.patientStatus.textContent = 'Patient record deleted.';
+            await this.loadPatients();
+        } catch (error) {
+            this.patientStatus.textContent = ['PGRST202', '42883'].includes(error.code)
+                ? 'Apply database/repairs/04-admin-patient-deletion.sql in Supabase to enable admin deletion.' : error.message || 'Unable to delete patient. Refresh before retrying.';
+        } finally { button.disabled = false; }
     }
 
     async savePatient(event) {
@@ -135,12 +151,6 @@ class AdminController {
         else this.loadStaff();
     }
 
-    saveSettings(event) {
-        event.preventDefault();
-        const settings = Object.fromEntries(new FormData(this.settingsForm).entries());
-        localStorage.setItem('entClinicSettings', JSON.stringify(settings));
-        this.settingsStatus.textContent = 'Settings saved in this browser.';
-    }
 
     statusOption(value, current) {
         return `<option value="${value}"${value === current ? ' selected' : ''}>${this.formatStatus(value)}</option>`;

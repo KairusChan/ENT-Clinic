@@ -1,0 +1,18 @@
+.account-card { padding: 0; overflow: hidden; border: 1px solid #dbe7ef; border-radius: 18px; box-shadow: 0 8px 28px #18364b08; margin-bottom: 24px; }
+.account-card-heading { display: flex; align-items: center; gap: 16px; padding: 26px 30px; background: linear-gradient(115deg, #edf8ff, #f8fcff); border-bottom: 1px solid #e0edf5; }
+.account-card-icon { display: grid; place-items: center; width: 54px; height: 54px; flex-shrink: 0; border-radius: 16px; background: #dcefff; color: #157bb7; }
+.account-card-icon svg { width: 28px; height: 28px; }
+.account-card-heading h2 { margin: 0; font-size: 23px; letter-spacing: -.4px; }
+.account-card-heading p { margin: 4px 0 0; font-size: 14px; color: #698095; }
+.account-details { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px 40px; margin: 0; padding: 28px 30px 32px; }
+.account-details[hidden] { display: none; }
+.account-details > div { min-width: 0; }
+.account-details dt { color: #6b8092; font-size: 12px; font-weight: 600; letter-spacing: .7px; text-transform: uppercase; margin-bottom: 9px; }
+.account-details dd { margin: 0; color: #1c354b; font-size: 16px; font-weight: 600; line-height: 1.6; overflow-wrap: anywhere; }
+.account-details #user-profile-role { display: inline-block; padding: 4px 12px; background: #edf5fc; color: #24658e; border-radius: 7px; font-size: 14px; }
+.account-details #user-profile-active { display: inline-flex; align-items: center; gap: 7px; border-radius: 30px; padding: 4px 12px; font-size: 14px; background: #eaf7ef; color: #27794c; }
+.account-details #user-profile-active::before { content: ''; width: 7px; height: 7px; background: currentColor; border-radius: 50%; }
+.account-details #user-profile-active[data-active="false"] { background: #f0f2f5; color: #647183; }
+.account-card #user-profile-status { margin: 20px 30px; }
+.account-card #user-profile-status:empty { display: none; }
+@media(max-width: 600px) { .account-card-heading { padding: 22px 20px; } .account-details { grid-template-columns: minmax(0, 1fr); padding: 24px 20px; gap: 22px; } .account-card-heading h2 { font-size: 21px; } }

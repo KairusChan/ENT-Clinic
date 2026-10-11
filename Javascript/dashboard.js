@@ -33,7 +33,7 @@ class DashboardController {
             .gte('checked_in_at', today.toISOString())
             .lt('checked_in_at', tomorrow.toISOString())
             .order('checked_in_at', { ascending: false });
-        query = query.neq('status', 'scheduled').neq('kind', 'event');
+        query = query.neq('status', 'scheduled').eq('kind', 'appointment');
         if (window.entStaff.role === 'doctor') query = query.eq('doctor_id', window.entStaff.id);
         const { data: visits, error } = await query;
 
@@ -52,7 +52,7 @@ class DashboardController {
             if (counts[visit.status] !== undefined) counts[visit.status] += 1;
         });
         Object.entries(this.metrics).forEach(([status, element]) => {
-            element.textContent = counts[status];
+            if (element) element.textContent = counts[status];
         });
     }
 

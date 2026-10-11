@@ -1,0 +1,90 @@
+#section-admitting_orders { grid-column: 1 / -1; }
+#use-admitting-template { margin-bottom: 12px; }
+.admit-input-wrap { position: relative; }
+.admit-input-wrap textarea { display: block; }
+.admit-input-mirror { position: absolute; box-sizing: border-box; margin: 0; border: 0; white-space: pre-wrap; overflow: hidden; color: transparent; pointer-events: none; user-select: none; }
+.admit-input-mirror .admit-typed-value { text-decoration: underline; text-decoration-color: var(--ink); text-underline-offset: 3px; }
+.admit-document { box-sizing: border-box; width: 100%; max-width: 700px; min-height: 900px; margin: 0 auto 20px; padding: 28px; background: white; color: #111; font: 13px/1.4 'Times New Roman', serif; }
+.admit-header { display: flex; align-items: center; gap: 15px; padding-bottom: 12px; border-bottom: 3px double #254d82; }
+.admit-header img { width: 64px; height: 80px; object-fit: contain; flex-shrink: 0; }
+.admit-header > div { flex: 1; text-align: center; font: 8px/1.2 Arial, sans-serif; }
+.admit-document .admit-header h1 { margin: 0 0 3px; font: bold 17px/1.1 Arial, sans-serif; color: #111; }
+.admit-header strong { font-size: 9px; }
+.admit-details { display: grid; grid-template-columns: 2.3fr 1fr; gap: 10px 20px; margin: 18px 0 10px; }
+.admit-detail, .admit-row { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+.admit-line { flex: 1; min-width: 0; min-height: 1em; border-bottom: 1px solid #333; white-space: pre-wrap; overflow-wrap: anywhere; }
+.admit-document h2 { margin: 8px 0 14px; text-align: center; font: bold 19px Arial, sans-serif; color: #111; }
+.admit-row { margin: 6px 0; break-inside: avoid; }
+.admit-row-large { display: block; margin: 8px 0; }
+.admit-row-large .admit-line { display: block; margin-left: 60px; min-height: 1.4em; padding-bottom: 2px; }
+.admit-instruction { min-height: 1.4em; white-space: pre-wrap; overflow-wrap: anywhere; }
+.admit-footer { margin-top: 35px; break-inside: avoid; font-family: Arial, sans-serif; }
+.admit-signature { margin-left: auto; width: 48%; border-top: 1px solid #333; padding-top: 3px; text-align: center; font-size: 10px; line-height: 1.3; }
+.admit-clinics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin-top: 16px; }
+.admit-clinics > div { border: 1px solid #555; border-radius: 3px; padding: 5px; text-align: center; font-size: 7px; line-height: 1.25; overflow-wrap: anywhere; }
+@media screen and (max-width: 600px) {
+    .admit-document { padding: 14px; font-size: 11px; }
+    .admit-document .admit-header h1 { font-size: 12px; }
+    .admit-header img { width: 40px; height: 60px; }
+    .admit-details { grid-template-columns: 1fr; }
+    .admit-clinics { grid-template-columns: 1fr; }
+}
+/* Match the prescription's right half of landscape Letter. Zero vertical
+   page margins leave no margin area for browser headers and footers. */
+@page admitting-orders { size: 11in 8.5in; margin: 0 0.3in 0 5.8in; }
+@media print {
+    body.consultation-document:has(.admit-document), body.print-queue-page:has(#print-queue-output .admit-document) { margin: 0; padding: 0; background: #fff; }
+    #consultation-printout:has(.admit-document), #print-queue-output:has(.admit-document) { page: admitting-orders; }
+    .admit-document { page: admitting-orders; max-width: none; min-height: 8.4in; padding: 0.3in 0 0.2in; margin: 0; font-size: 8pt; break-before: page; display: flex; flex-direction: column; }
+    .admit-document:first-child { break-before: auto; }
+    .admit-header { gap: 2mm; padding-bottom: 2mm; break-inside: avoid; }
+    .admit-header img { width: 17mm; height: 22mm; }
+    .admit-header > div { min-width: 0; font-size: 5.8pt; line-height: 1.25; }
+    .admit-header strong { font-size: 6.5pt; }
+    #consultation-printout .admit-header h1, .admit-document .admit-header h1 { font-size: 9.5pt; line-height: 1.15; margin: 0 0 1mm; }
+    .admit-details { grid-template-columns: 2.2fr 1fr; margin: 6mm 0 4mm; gap: 4mm 2mm; font: 7pt Arial, sans-serif; break-inside: avoid; }
+    #consultation-printout .admit-document h2, .admit-document h2 { font-size: 11pt; margin: 2mm 0 3mm; }
+    .admit-row { margin: 1mm 0; }
+    .admit-row-large { margin: 1.5mm 0; }
+    .admit-row-large .admit-line { margin-left: 14mm; min-height: 1.4em; padding-bottom: 0.5mm; }
+    .admit-document > * { flex-shrink: 0; }
+    .admit-footer { margin-top: auto; padding-top: 6mm; }
+    .admit-signature { font-size: 6pt; }
+    .admit-clinics { margin-top: 3mm; gap: 1mm; }
+    .admit-clinics > div { font-size: 4.5pt; padding: 1mm; }
+}
+
+.admit-document .recommendation-content { padding: 3mm 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 10pt/1.5 Arial, sans-serif; orphans: 3; widows: 3; }
+#section-recommendation { grid-column: 1 / -1; }
+.certificate-editor label { display: block; margin: 14px 0 6px; font-weight: 600; }
+.note-section .certificate-ruled-input { border: 1px solid var(--line); border-radius: 4px; padding: 0 8px; line-height: 28px; min-height: 30px; overflow: hidden; resize: none; background: repeating-linear-gradient(to bottom, #fbfdff 0, #fbfdff 27px, #9eafbe 27px, #9eafbe 28px); }
+.certificate-date { margin: 12px 0; text-align: right; font-weight: bold; }
+.certificate-inline { display: inline-block; min-width: 110px; border-bottom: 1px solid #333; padding: 0 5px; text-align: center; white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; }
+.certificate-name { min-width: 58%; }
+.certificate-age { min-width: 60px; }
+.certificate-rest { min-width: 130px; }
+.admit-document .certificate-title { font: bold 26px Arial, sans-serif; margin: 12px 0; }
+.certificate-body { font: 16px/1.45 'Times New Roman', serif; }
+.certificate-body p { margin: 10px 0; color: #111; font: inherit; }
+.certificate-ruled { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 26px; background: repeating-linear-gradient(to bottom, transparent 0, transparent 25px, #555 25px, #555 26px); }
+.certificate-impression { min-height: 78px; }
+.certificate-further { min-height: 52px; }
+.certificate-disclaimer { font-style: italic !important; }
+.medical-certificate .admit-clinics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.medical-certificate .admit-clinics > div:last-child { display: none; }
+.medical-certificate .admit-signature { width: 58%; }
+@media print {
+    #consultation-printout .medical-certificate .certificate-title, .medical-certificate .certificate-title { font-size: 18pt; margin: 3mm 0; }
+    .certificate-date { font-size: 10pt; margin: 3mm 0; }
+    .certificate-body { font-size: 11pt; line-height: 1.45; }
+    .certificate-body p { margin: 2mm 0; }
+    .certificate-inline { min-width: 30mm; }
+    .certificate-name { min-width: 65mm; }
+    .certificate-age { min-width: 20mm; }
+    .certificate-rest { min-width: 35mm; }
+    .certificate-ruled { line-height: 6mm; background: repeating-linear-gradient(to bottom, transparent 0, transparent calc(6mm - 0.5pt), #333 calc(6mm - 0.5pt), #333 6mm); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .certificate-impression { min-height: 24mm; }
+    .certificate-further { min-height: 12mm; }
+}
+.admit-document .medication-print-rx { display: block; width: 10mm; height: 13mm; object-fit: contain; object-position: left center; }
+.admit-document .medication-print-content { padding: 3mm 0 6mm 8ch; white-space: pre-wrap; overflow-wrap: anywhere; font: 10pt/1.5 Arial, sans-serif; orphans: 3; widows: 3; }

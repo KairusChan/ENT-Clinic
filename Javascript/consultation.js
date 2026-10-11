@@ -6,11 +6,11 @@ class ConsultationController {
         this.fields = document.getElementById('note-fields');
         this.status = document.getElementById('consultation-status');
         this.saveButton = document.getElementById('save-notes');
-        this.names = ['subjective', 'objective', 'assessment', 'plan', 'recommendation', 'medication', 'referral', 'admitting_orders', 'pf'];
-        // Keep the existing database field compatible with saved notes and RPCs.
-        this.storageName = name => name === 'medication' ? 'diagnostic' : name;
+        this.names = ['subjective', 'objective', 'assessment', 'plan', 'recommendation', 'medication', 'diagnostic', 'referral', 'admitting_orders', 'pf'];
+        // Each visible section has its own database column.
+        this.storageName = name => name;
         this.storedNames = [...this.names.map(this.storageName), 'history', 'rx'];
-        this.printLabels = {recommendation: 'Recommendation', medication: 'Medication', referral: 'Referral', admitting_orders: 'Admitting Orders'};
+        this.printLabels = {recommendation: 'Recommendation', medication: 'Medication', diagnostic: 'Diagnostic', referral: 'Referral', admitting_orders: 'Admitting Orders'};
         this.dirty = false;
         this.saving = false;
     }
@@ -19,6 +19,18 @@ class ConsultationController {
             this.status.textContent = 'Open a patient consultation from the doctor queue.';
             return;
         }
+        if (window.entMedicalCertificate) this.certificateEditor = new window.entMedicalCertificate.Editor(this.form.elements.recommendation);
+        if (window.entMedicationCatalog) {
+            const catalog = await window.entMedicationCatalog.initialize();
+            if (catalog.error) {
+                const warning = document.createElement('p');
+                warning.className = 'form-status';
+                warning.setAttribute('role', 'status');
+                warning.textContent = catalog.error + ' Previously available presets are shown; review their instructions.';
+                document.getElementById('section-medication').prepend(warning);
+            }
+        }
+        if (window.MedicationForm) this.medicationForm = new window.MedicationForm(this.form.elements.medication);
         this.form.addEventListener('submit', event => this.save(event));
         this.form.addEventListener('input', () => { this.dirty = true; this.updatePrintButtons(); });
         document.querySelectorAll('[data-print-note]').forEach(button => button.addEventListener('click', () => this.printSection(button.dataset.printNote)));
@@ -43,12 +55,13 @@ class ConsultationController {
             this.printPatient = patient;
             this.visitDate = visit.checked_in_at;
             document.getElementById('consultation-patient').textContent = [patient.first_name, patient.middle_name, patient.last_name, patient.suffix].filter(Boolean).join(' ') || 'Patient';
-            document.getElementById('consultation-details').textContent = `Birthdate: ${patient.date_of_birth || 'Not provided'} · Patient #${visit.patient_id} · ${new Date(visit.checked_in_at).toLocaleString()}`;
+            document.getElementById('consultation-details').textContent = `Birthdate: ${patient.date_of_birth || 'Not provided'} Â· Patient #${visit.patient_id} Â· ${new Date(visit.checked_in_at).toLocaleString()}`;
             document.getElementById('consultation-reason').textContent = visit.reason || 'Not provided';
             document.getElementById('consultation-allergies').textContent = patient.allergies || 'Not recorded';
             document.getElementById('consultation-state').textContent = visit.status.replaceAll('_', ' ');
             document.getElementById('patient-record-link').href = `profile.html?id=${encodeURIComponent(visit.patient_id)}`;
-            const {data: note, error: noteError} = await this.client.from('Notes').select('*').eq('visit_id', this.visitId).maybeSingle();
+            const {data: note, error: noteError} = await this.client.from('Notes').select('*, medication').eq('visit_id', this.visitId).maybeSingle();
+            if (!noteError && note && !Object.hasOwn(note, 'medication')) throw new Error('Apply the separate Diagnostic database migration before editing notes.');
             if (noteError) {
                 // Let an accepted doctor draft notes even when note storage is unavailable.
                 // Saving stays disabled until storage has loaded successfully.
@@ -57,15 +70,18 @@ class ConsultationController {
             }
             if (note) {
                 this.names.forEach(name => { this.form.elements[name].value = note[this.storageName(name)] || ''; });
+                if (window.entAdmittingOrders) this.form.elements.admitting_orders.dispatchEvent(new Event('admitting-loaded'));
+                this.certificateEditor?.load(this.form.elements.recommendation.value);
+                this.medicationForm?.load(this.form.elements.medication.value);
                 this.originalNotes = Object.fromEntries(this.storedNames.map(name => [name, note[name] || '']));
                 this.fields.disabled = false;
                 this.saveButton.disabled = false;
-                this.saveButton.textContent = 'Save Changes';
+                this.saveButton.textContent = 'Update';
                 this.updatePrintButtons();
                 this.status.textContent = 'Saved notes are ready to print. Save any changes before printing.';
                 return;
             }
-            if (visit.status !== 'with_doctor') throw new Error(visit.status === 'completed' ? 'No consultation notes were recorded for this completed visit.' : 'Accept this patient from Today’s Patients before writing notes.');
+            if (visit.status !== 'with_doctor') throw new Error(visit.status === 'completed' ? 'No consultation notes were recorded for this completed visit.' : 'Accept this patient from Todayâ€™s Patients before writing notes.');
             this.fields.disabled = false;
             this.saveButton.disabled = false;
             this.status.textContent = 'Enter your notes and PF, then save to complete the consultation and return to the queue.';
@@ -84,6 +100,17 @@ class ConsultationController {
         if (!content?.trim()) return;
         const printout = document.getElementById('consultation-printout');
         printout.replaceChildren();
+        if ((name === 'admitting_orders' || name === 'recommendation' || name === 'medication' || name === 'diagnostic') && window.entAdmittingOrders) {
+            printout.innerHTML = window.entAdmittingOrders.render(content, this.printPatient, {checked_in_at: this.visitDate}, name);
+            try {
+                await Promise.all([...printout.querySelectorAll('img')].map(image => image.decode ? image.decode() : Promise.resolve()));
+            } catch {
+                this.status.textContent = 'Print artwork could not load. Please reopen the consultation and try again.';
+                return;
+            }
+            await this.openPrintDialog();
+            return;
+        }
         if (name === 'medication' || name === 'referral') {
             const images = this.renderLetterhead(printout, name, content);
             try {
@@ -92,7 +119,7 @@ class ConsultationController {
                 this.status.textContent = 'Print artwork could not load. Please reopen the consultation and try again.';
                 return;
             }
-            window.print();
+            await this.openPrintDialog();
             return;
         }
         const append = (tag, text) => {
@@ -105,7 +132,15 @@ class ConsultationController {
         append('p', document.getElementById('consultation-details').textContent);
         append('p', 'Consultation #' + this.visitId);
         append('pre', content);
-        window.print();
+        await this.openPrintDialog();
+    }
+    async openPrintDialog() {
+        try {
+            if (window.entPrint) await window.entPrint();
+            else window.print();
+        } catch (error) {
+            this.status.textContent = 'Unable to print: ' + (error.message || 'Check your device print service.');
+        }
     }
     renderLetterhead(printout, name, content) {
         const add = (parent, tag, className, text) => {
@@ -171,14 +206,14 @@ class ConsultationController {
         if (this.saving || this.saveButton.disabled) return;
         // Retain retired fields when editing a saved note; the database still expects them.
         const notes = Object.fromEntries(this.storedNames.map(name => [name,
-            (name === 'diagnostic' || this.names.includes(name)) ? this.form.elements[name === 'diagnostic' ? 'medication' : name].value.trim() : (this.originalNotes?.[name] || '')
+            this.names.includes(name) ? this.form.elements[name].value.trim() : (this.originalNotes?.[name] || '')
         ]));
         if (!Object.values(notes).some(Boolean)) { this.status.textContent = 'Enter consultation notes before saving.'; return; }
         if (Object.values(notes).some(value => value.length > 20000)) { this.status.textContent = 'Each section must be at most 20,000 characters.'; return; }
         this.saving = true;
         this.fields.disabled = true;
         this.saveButton.disabled = true;
-        this.status.textContent = 'Saving consultation notes…';
+        this.status.textContent = 'Saving consultation notesâ€¦';
         try {
             const procedure = this.originalNotes ? 'update_consultation_notes' : 'save_consultation_notes';
             const args = { p_visit_id: this.visitId, p_notes: notes };
@@ -189,12 +224,12 @@ class ConsultationController {
             this.originalNotes = {...notes};
             this.fields.disabled = false;
             this.saveButton.disabled = false;
-            this.saveButton.textContent = 'Save Changes';
+            this.saveButton.textContent = 'Update';
             document.getElementById('consultation-state').textContent = 'completed';
             this.status.textContent = 'Notes saved. Returning to the patient queue...';
             window.location.href = 'queue.html';
         } catch (error) {
-            this.status.textContent = `Unable to confirm the save. Your notes remain here; retry Save Notes to confirm. ${error.message || ''}`;
+            this.status.textContent = `Unable to confirm the save. Your notes remain here; retry ${this.originalNotes ? 'Update' : 'Save Notes'} to confirm. ${error.message || ''}`;
             this.fields.disabled = false;
             this.saveButton.disabled = false;
         } finally { this.saving = false; this.updatePrintButtons(); }

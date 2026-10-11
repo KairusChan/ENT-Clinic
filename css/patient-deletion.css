@@ -1,0 +1,56 @@
+/* Shared secretary request and doctor approval panels. */
+:is(#patient-deletion, #consultation-transfer) .approval-summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; cursor: pointer; list-style: none; }
+:is(#patient-deletion, #consultation-transfer) .approval-summary::-webkit-details-marker { display: none; }
+:is(#patient-deletion, #consultation-transfer) .approval-summary::after { content: ''; flex: 0 0 9px; height: 9px; margin-right: 5px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); }
+:is(#patient-deletion, #consultation-transfer) .approval-dropdown[open] > .approval-summary::after { transform: rotate(225deg); }
+:is(#patient-deletion, #consultation-transfer) .approval-summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 6px; border-radius: 4px; }
+:is(#patient-deletion, #consultation-transfer) .approval-body { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+:is(#patient-deletion, #consultation-transfer) .approval-toolbar { display: flex; justify-content: flex-end; }
+#consultation-transfer .transfer-records { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+#consultation-transfer .transfer-records .deletion-reason { margin-bottom: 0; }
+#consultation-transfer input[data-patient-search] { box-sizing: border-box; width: 100%; padding: 12px 14px; border: 1px solid #b7c8d3; border-radius: 7px; font: inherit; font-size: 14px; }
+#consultation-transfer .deletion-actions { margin-top: 16px; }
+@media (max-width: 600px) { #consultation-transfer .transfer-records { grid-template-columns: minmax(0, 1fr); } }
+:is(#patient-deletion, #consultation-transfer) { margin-top: 22px; }
+:is(#patient-deletion, #consultation-transfer):empty { display: none; }
+:is(#patient-deletion, #consultation-transfer) .deletion-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+:is(#patient-deletion, #consultation-transfer) .deletion-title { min-width: 0; }
+:is(#patient-deletion, #consultation-transfer) .eyebrow { display: block; margin-bottom: 6px; }
+:is(#patient-deletion, #consultation-transfer) h2 { margin: 0; font-size: 21px; line-height: 1.35; }
+:is(#patient-deletion, #consultation-transfer) .deletion-subtitle { margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+:is(#patient-deletion, #consultation-transfer) .deletion-status { margin: 20px 0 0; padding: 14px 16px; background: #f5f8fb; border: 1px solid var(--line); border-radius: 7px; color: var(--muted); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+:is(#patient-deletion, #consultation-transfer) .deletion-status:empty { display: none; }
+:is(#patient-deletion, #consultation-transfer) .deletion-content { display: grid; gap: 16px; margin-top: 20px; }
+:is(#patient-deletion, #consultation-transfer) .deletion-content:empty { display: none; }
+:is(#patient-deletion, #consultation-transfer) .deletion-form { display: grid; gap: 20px; }
+:is(#patient-deletion, #consultation-transfer) .deletion-notice { margin: 0; padding: 14px 16px; border-left: 3px solid var(--blue); border-radius: 0 7px 7px 0; background: #f0f7fd; color: #435c72; font-size: 14px; line-height: 1.65; }
+:is(#patient-deletion, #consultation-transfer) .field { margin: 0; min-width: 0; }
+:is(#patient-deletion, #consultation-transfer) .field label { margin-bottom: 8px; color: var(--ink); font-size: 14px; }
+:is(#patient-deletion, #consultation-transfer) textarea { display: block; box-sizing: border-box; width: 100%; min-height: 120px; padding: 12px 14px; border: 1px solid #b7c8d3; border-radius: 7px; background: var(--paper); color: var(--ink); font: inherit; font-size: 14px; line-height: 1.6; resize: vertical; }
+:is(#patient-deletion, #consultation-transfer) textarea::placeholder { color: var(--muted); opacity: 1; }
+:is(#patient-deletion, #consultation-transfer) .deletion-hint { display: block; margin-top: 7px; color: var(--muted); font-size: 12px; }
+:is(#patient-deletion, #consultation-transfer) .deletion-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+:is(#patient-deletion, #consultation-transfer) .outline, :is(#patient-deletion, #consultation-transfer) .primary { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; margin: 0; padding: 10px 16px; border-radius: 6px; font: inherit; font-size: 13px; font-weight: 600; line-height: 1.4; text-decoration: none; cursor: pointer; text-align: center; }
+:is(#patient-deletion, #consultation-transfer) .deletion-refresh { flex-shrink: 0; }
+:is(#patient-deletion, #consultation-transfer) .outline:hover { background: #f3f8fc; border-color: var(--blue); color: var(--blue); }
+:is(#patient-deletion, #consultation-transfer) .deletion-danger { color: #b33b3b; border-color: #e5bcbc; background: #fff7f7; }
+:is(#patient-deletion, #consultation-transfer) .deletion-danger:hover { color: #922c2c; border-color: #b33b3b; background: #ffeded; }
+:is(#patient-deletion, #consultation-transfer) :is(button, a, textarea):focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+:is(#patient-deletion, #consultation-transfer) button:disabled { opacity: .55; cursor: wait; }
+:is(#patient-deletion, #consultation-transfer) .deletion-request { padding: 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); min-width: 0; }
+:is(#patient-deletion, #consultation-transfer) .deletion-request-heading { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+:is(#patient-deletion, #consultation-transfer) h3 { flex: 1 1 240px; margin: 0; font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
+:is(#patient-deletion, #consultation-transfer) .deletion-badge { display: inline-flex; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; line-height: 1.4; }
+:is(#patient-deletion, #consultation-transfer) .deletion-badge-pending { background: var(--amber); color: var(--amber-ink); }
+:is(#patient-deletion, #consultation-transfer) .deletion-badge-approved { background: var(--mint); color: var(--mint-ink); }
+:is(#patient-deletion, #consultation-transfer) .deletion-badge-rejected { background: #edf1f5; color: #526276; }
+:is(#patient-deletion, #consultation-transfer) .deletion-reason { margin: 16px 0; padding: 14px; border-radius: 6px; background: #f8fafc; }
+:is(#patient-deletion, #consultation-transfer) .deletion-label { color: var(--muted); font-size: 12px; font-weight: 600; }
+:is(#patient-deletion, #consultation-transfer) .deletion-reason p { margin: 6px 0 0; color: var(--ink); font-size: 14px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+    :is(#patient-deletion, #consultation-transfer) .deletion-heading { flex-direction: column; gap: 14px; }
+    :is(#patient-deletion, #consultation-transfer) .deletion-actions { flex-direction: column; }
+    :is(#patient-deletion, #consultation-transfer) .deletion-actions > * { width: 100%; box-sizing: border-box; }
+    :is(#patient-deletion, #consultation-transfer) .deletion-request { padding: 14px; }
+    :is(#patient-deletion, #consultation-transfer) h2 { font-size: 19px; }
+}

@@ -139,3 +139,23 @@
     .topbar, .sidebar, .navigation-backdrop { display: none !important; }
     .navigation-ready .layout { display: block; }
 }
+
+/* Keep account navigation separate and anchored below workspace links. */
+.sidebar.sidebar-with-account {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.sidebar-with-account > .sidebar-title { flex-shrink: 0; }
+.sidebar-with-account > nav:not(.sidebar-account) {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+.sidebar-with-account > .sidebar-account {
+    flex: 0 0 auto;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #ffffff20;
+}
+.sidebar-account .nav-item { margin-bottom: 0; }

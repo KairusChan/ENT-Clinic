@@ -22,6 +22,7 @@
 .schedule-cards > p { text-align: center; padding: 65px 18px; line-height: 1.7; color: #77879b; }
 .schedule-item { display: grid; grid-template-columns: 86px minmax(0, 1fr) auto; gap: 20px; align-items: start; border: 1px solid #dee8f3; border-left: 4px solid #368dcf; background: #fff; border-radius: 9px; padding: 20px; margin-bottom: 14px; }
 .schedule-item:last-child { margin-bottom: 0; }
+.schedule-item > .schedule-item-actions { grid-column: 2 / -1; justify-content: flex-end; }
 .event-item { border-left-color: #8491b9; }
 .schedule-item-time { display: flex; flex-direction: column; gap: 7px; padding-top: 4px; font-variant-numeric: tabular-nums; }
 .schedule-item-time strong { font-size: 15px; font-weight: 650; color: #264a6d; }

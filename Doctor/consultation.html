@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENT Clinic | Consultation Note</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css?v=0cb5dfd97d11">
     <link rel="stylesheet" href="../css/navigation.css">
-</head>
+    <link rel="stylesheet" href="../css/admitting-orders.css">
+    <link rel="stylesheet" href="../css/note-dropdowns.css">
+<script src="../Javascript/uppercase-inputs.js?v=1" defer></script></head>
 
 <body class="consultation-document">
     <header class="topbar">
@@ -21,10 +23,11 @@
         <a class="topbar-logout logout-link" href="../index.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v16h5M14 8l4 4-4 4M8 12h12"/></svg><span>Logout</span></a>
     </header>
     <div class="layout">
-        <aside class="sidebar" id="workspace-navigation" aria-label="Workspace navigation">
+        <aside class="sidebar sidebar-with-account" id="workspace-navigation" aria-label="Workspace navigation">
             <p class="sidebar-title">WORKSPACE</p>
             <nav><a class="nav-item" href="index.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a><a class="nav-item active" href="queue.html" aria-current="page"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2 20v-2a6 6 0 0 1 12 0v2M16 5h6M17 10h5M18 15h4"/></svg>Today's Patients / Queue</a><a class="nav-item" href="search.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6 16a3 3 0 0 1 6 0M15 9h3M15 13h3"/></svg>Patient Lists</a><a class="nav-item" href="print-queue.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H3V9h18v9h-3M6 14h12v7H6zM17 12h1"/></svg>Print Queue</a><a class="nav-item" href="schedule.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M7 15h2M15 15h2"/></svg>My Schedule</a><hr class="navigation-divider"><a class="nav-item" href="accounts.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M19 8v6M16 11h6"/></svg>Create Secretary</a>
-</nav>
+<a class="nav-item" href="medication-prescription.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 3h8v4H8zM6 7h12v14H6zM9 13h6M12 10v6"/></svg>Medication Prescription</a></nav>
+        <nav class="sidebar-account" aria-label="Account"><a class="nav-item" href="user-profile.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>User Profile</a></nav>
         </aside>
         <main class="consultation-page">
 <div class="page-head"><div><div class="eyebrow">Doctor workspace / Consultation</div><h1>Consultation Note</h1><p>Record your findings and care plan for this visit.</p></div><a class="outline" href="queue.html">Back to Today's Patients</a></div>
@@ -42,20 +45,42 @@
 <section class="panel note-section" id="section-objective"><div class="note-heading"><span class="note-number">02</span><label for="note-objective">OBJECTIVE</label></div><p id="help-objective">Examination findings and observations.</p><textarea id="note-objective" name="objective" rows="5" maxlength="20000" aria-describedby="help-objective"></textarea></section>
 <section class="panel note-section" id="section-assessment"><div class="note-heading"><span class="note-number">03</span><label for="note-assessment">ASSESSMENT</label></div><p id="help-assessment">Clinical impression and diagnoses.</p><textarea id="note-assessment" name="assessment" rows="5" maxlength="20000" aria-describedby="help-assessment"></textarea></section>
 <section class="panel note-section" id="section-plan"><div class="note-heading"><span class="note-number">04</span><label for="note-plan">PLAN</label></div><p id="help-plan">Investigations, treatment, and follow-up.</p><textarea id="note-plan" name="plan" rows="5" maxlength="20000" aria-describedby="help-plan"></textarea></section>
-<section class="panel note-section" id="section-recommendation"><div class="note-heading"><span class="note-number">05</span><label for="note-recommendation">RECOMMENDATION</label></div><p id="help-recommendation">Advice and recommendations for the patient.</p><textarea id="note-recommendation" name="recommendation" rows="5" maxlength="20000" aria-describedby="help-recommendation"></textarea><button type="button" class="outline note-print-button" data-print-note="recommendation" hidden disabled>Print Recommendation</button></section>
-<section class="panel note-section" id="section-medication"><div class="note-heading"><span class="note-number">06</span><label for="note-medication">MEDICATION</label></div><p id="help-medication">Medications, dosage, frequency, and duration.</p><textarea id="note-medication" name="medication" rows="5" maxlength="20000" aria-describedby="help-medication"></textarea><button type="button" class="outline note-print-button" data-print-note="medication" hidden disabled>Print Medication</button></section>
-<section class="panel note-section" id="section-referral"><div class="note-heading"><span class="note-number">07</span><label for="note-referral">REFERRAL</label></div><p id="help-referral">Service or specialist and reason for referral.</p><textarea id="note-referral" name="referral" rows="5" maxlength="20000" aria-describedby="help-referral"></textarea><button type="button" class="outline note-print-button" data-print-note="referral" hidden disabled>Print Referral</button></section>
-<section class="panel note-section" id="section-admitting_orders"><div class="note-heading"><span class="note-number">08</span><label for="note-admitting_orders">Admitting orders</label></div><p id="help-admitting_orders">Admission instructions and orders, if applicable.</p><textarea id="note-admitting_orders" name="admitting_orders" rows="5" maxlength="20000" aria-describedby="help-admitting_orders"></textarea><button type="button" class="outline note-print-button" data-print-note="admitting_orders" hidden disabled>Print Admitting Orders</button></section>
-<section class="panel note-section" id="section-pf"><div class="note-heading"><span class="note-number">09</span><label for="note-pf">PF</label></div><p id="help-pf">Enter the amount to charge the patient. The secretary will see this PF after you save.</p><textarea id="note-pf" name="pf" placeholder="e.g. 500.00" rows="2" maxlength="20000" aria-describedby="help-pf"></textarea></section>
+<section class="panel note-section" id="section-recommendation"><details class="note-dropdown"><summary class="note-heading"><span class="note-number">05</span><span>RECOMMENDATION</span></summary><p id="help-recommendation">Medical certificate: enter the clinical impression, rest period, and further recommendations. Patient details are filled in when printed.</p><textarea id="note-recommendation" aria-label="recommendation" name="recommendation" rows="5" maxlength="20000" aria-describedby="help-recommendation"></textarea><button type="button" class="outline note-print-button" data-print-note="recommendation" hidden disabled>Print Recommendation</button></details></section>
+<section class="panel note-section" id="section-medication"><div class="note-heading"><span class="note-number">06</span><label for="note-medication">MEDICATION</label></div><p id="help-medication">Medications, dosage, frequency, and duration.</p><div id="medication-cards"></div>
+<button type="button" class="outline" id="add-medication">+ Add medicine</button>
+<p>Choose a medication to fill its remarks. Edit the name, quantity, or instructions as needed.</p>
+<label for="note-medication" class="medication-preview-label">Medication text for saving and printing</label>
+<textarea id="note-medication" name="medication" rows="5" maxlength="20000" aria-describedby="help-medication"></textarea><button type="button" class="outline note-print-button" data-print-note="medication" hidden disabled>Print Medication</button></section>
+<section class="panel note-section" id="section-diagnostic"><details class="note-dropdown"><summary class="note-heading"><span class="note-number">07</span><span>DIAGNOSTIC</span></summary><p id="help-diagnostic">Diagnostic tests, investigations, and instructions.</p><textarea id="note-diagnostic" aria-label="Diagnostic" name="diagnostic" rows="5" maxlength="20000" aria-describedby="help-diagnostic"></textarea><button type="button" class="outline note-print-button" data-print-note="diagnostic" hidden disabled>Print Diagnostic</button></details></section>
+<section class="panel note-section" id="section-referral"><details class="note-dropdown"><summary class="note-heading"><span class="note-number">08</span><span>REFERRAL</span></summary><p id="help-referral">Service or specialist and reason for referral.</p><textarea id="note-referral" aria-label="referral" name="referral" rows="5" maxlength="20000" aria-describedby="help-referral"></textarea><button type="button" class="outline note-print-button" data-print-note="referral" hidden disabled>Print Referral</button></details></section>
+<section class="panel note-section" id="section-admitting_orders"><details class="note-dropdown"><summary class="note-heading"><span class="note-number">09</span><span>Admitting orders</span></summary><p id="help-admitting_orders">Use the admitting orders template, then fill in the blanks and edit the instructions as needed.</p><button type="button" class="outline" id="use-admitting-template">Use admitting orders template</button><div class="admit-input-wrap"><textarea id="note-admitting_orders" aria-label="admitting orders" name="admitting_orders" rows="17" maxlength="20000" aria-describedby="help-admitting_orders"></textarea><div class="admit-input-mirror" aria-hidden="true"></div></div><button type="button" class="outline note-print-button" data-print-note="admitting_orders" hidden disabled>Print Admitting Orders</button></details></section>
+<section class="panel note-section" id="section-pf"><div class="note-heading"><span class="note-number">10</span><label for="note-pf">PF</label></div><p id="help-pf">Enter the amount to charge the patient. The secretary will see this PF after you save.</p><textarea id="note-pf" name="pf" placeholder="e.g. 500.00" rows="2" maxlength="20000" aria-describedby="help-pf"></textarea></section>
 </div></fieldset>
 <div class="panel consultation-save"><div><strong>Finish consultation</strong><p>Save notes and PF, then return to the queue. Reopen View Notes to print.</p></div><button class="primary" type="submit" id="save-notes" disabled>Save Notes</button></div>
 </form></main>
     </div>
     <article id="consultation-printout" aria-hidden="true"></article>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-config.js?v=20261008-config" defer></script>
     <script src="../Javascript/supabase-client.js" defer></script>
     <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/notification-center.js" defer></script>
+    <script src="../Javascript/schedule-alerts.js" defer></script>
     <script src="../Javascript/navigation.js" defer></script>
+    <template id="medication-card-template">
+        <div class="medication-card">
+            <div class="medication-card-heading"><strong class="medication-title"></strong><button type="button" class="medication-remove outline">Remove</button></div>
+            <div class="medication-card-grid">
+                <div><span class="medication-field-label">Medication</span><div class="medication-choices" role="group" aria-label="Medication presets"></div></div>
+                <div><label data-label="quantity">Number / Quantity</label><input data-field="quantity" type="number" min="1" step="1" placeholder="Enter quantity"></div>
+                <div class="medication-name"><label data-label="name">Medicine name</label><input data-field="name" type="text" maxlength="200" placeholder="Select above or enter a medicine"></div>
+                <div class="medication-remarks"><label data-label="remarks">Remarks</label><textarea data-field="remarks" rows="4" maxlength="20000" placeholder="Enter remarks or instructions..."></textarea></div>
+            </div>
+        </div>
+    </template>
+    <script src="../Javascript/medication-form.js" defer></script>
+    <script src="../Javascript/medication-catalog.js" defer></script>
+    <script src="../Javascript/medical-certificate.js" defer></script>
+    <script src="../Javascript/admitting-orders.js" defer></script>
     <script src="../Javascript/consultation.js" defer></script>
 </body></html>

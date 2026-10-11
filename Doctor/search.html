@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENT Clinic | Search Patient</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css?v=0cb5dfd97d11">
     <link rel="stylesheet" href="../css/navigation.css">
-</head>
+    <link rel="stylesheet" href="../css/patient-deletion.css">
+    <link rel="stylesheet" href="../css/patient-workspace.css">
+<script src="../Javascript/uppercase-inputs.js?v=1" defer></script></head>
 
 <body>
     <header class="topbar">
@@ -21,11 +23,12 @@
         <a class="topbar-logout logout-link" href="../index.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v16h5M14 8l4 4-4 4M8 12h12"/></svg><span>Logout</span></a>
     </header>
     <div class="layout">
-        <aside class="sidebar" id="workspace-navigation" aria-label="Workspace navigation">
+        <aside class="sidebar sidebar-with-account" id="workspace-navigation" aria-label="Workspace navigation">
             <p class="sidebar-title">WORKSPACE</p>
             <nav><a class="nav-item" href="index.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a><a class="nav-item" href="queue.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2 20v-2a6 6 0 0 1 12 0v2M16 5h6M17 10h5M18 15h4"/></svg>Today's Patients / Queue</a><a class="nav-item active" href="search.html" aria-current="page"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6 16a3 3 0 0 1 6 0M15 9h3M15 13h3"/></svg>Patient Lists</a><a class="nav-item" href="print-queue.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H3V9h18v9h-3M6 14h12v7H6zM17 12h1"/></svg>Print Queue</a><a
                     class="nav-item" href="schedule.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M7 15h2M15 15h2"/></svg>My Schedule</a><hr class="navigation-divider"><a class="nav-item" href="accounts.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M19 8v6M16 11h6"/></svg>Create Secretary</a>
-</nav>
+<a class="nav-item" href="medication-prescription.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 3h8v4H8zM6 7h12v14H6zM9 13h6M12 10v6"/></svg>Medication Prescription</a></nav>
+        <nav class="sidebar-account" aria-label="Account"><a class="nav-item" href="user-profile.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>User Profile</a></nav>
         </aside>
         <main>
             <div class="page-head">
@@ -36,7 +39,7 @@
                 </div>
             </div>
             <section class="panel">
-                <h2>Search Patient</h2>
+                <div class="section-title patient-directory-heading"><h2>Search Patient</h2></div>
                 <div class="search-row"><input id="patient-search"
                         placeholder="Search by name, ID, contact, or birthday" aria-label="Search patients"><button
                         class="small" id="patient-search-button" type="button">Search</button></div>
@@ -46,17 +49,31 @@
                 <div id="patient-results" aria-live="polite">
                     <p id="patient-results-status">Loading patient records...</p>
                 </div>
+                <nav id="patient-pagination" class="patient-pagination" aria-label="Patient result pages" hidden>
+                    <span id="patient-page-status" role="status" aria-live="polite"></span>
+                    <div>
+                        <button id="patient-previous" class="outline" type="button">Previous</button>
+                        <button id="patient-next" class="outline" type="button">Next</button>
+                    </div>
+                </nav>
+                <div class="patient-register-action"><span>Didn't find the patient?</span><a class="outline" href="register.html">+ Register New Patient</a></div>
 
             </section>
 
+        <section class="panel" id="consultation-transfer" aria-label="Consultation transfer requests"></section>
+        <section class="panel" id="patient-deletion" aria-label="Patient deletion requests"></section>
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-config.js?v=20261008-config" defer></script>
     <script src="../Javascript/supabase-client.js" defer></script>
     <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/notification-center.js" defer></script>
+    <script src="../Javascript/schedule-alerts.js" defer></script>
     <script src="../Javascript/navigation.js" defer></script>
     <script src="../Javascript/patient-search.js" defer></script>
+    <script src="../Javascript/patient-deletion.js" defer></script>
+    <script src="../Javascript/consultation-transfer.js" defer></script>
 </body>
 
 </html>

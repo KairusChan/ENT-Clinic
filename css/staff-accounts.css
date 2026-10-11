@@ -2,3 +2,13 @@
 #account-list .result { flex-wrap: wrap; gap: 12px; }
 #password-form[hidden] { display: none; }
 #account-status { white-space: pre-wrap; }
+
+/* Keep the password title above a matched pair of fields. */
+#password-form > h2 { grid-column: 1 / -1; margin: 0; overflow-wrap: anywhere; }
+#password-form > .field { min-width: 0; }
+#password-form input[type="password"] { width: 100%; }
+#password-form > .form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+#password-form .form-actions button { min-height: 44px; padding: 10px 18px; font-size: 14px; }
+@media (max-width: 640px) { #password-form { grid-template-columns: minmax(0, 1fr); } }
+
+#email-form[hidden]{display:none}#email-form .form-actions{grid-column:1 / -1;display:flex;gap:10px;justify-content:flex-end}

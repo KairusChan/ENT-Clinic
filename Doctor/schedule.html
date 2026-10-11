@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENT Clinic | My Schedule</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css?v=0cb5dfd97d11">
     <link rel="stylesheet" href="../css/navigation.css">
     <link rel="stylesheet" href="../css/schedule-page.css">
-</head>
+<script src="../Javascript/uppercase-inputs.js?v=1" defer></script></head>
 
 <body class="doctor-schedule">
     <header class="topbar">
@@ -22,18 +22,19 @@
         <a class="topbar-logout logout-link" href="../index.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v16h5M14 8l4 4-4 4M8 12h12"/></svg><span>Logout</span></a>
     </header>
     <div class="layout">
-        <aside class="sidebar" id="workspace-navigation" aria-label="Workspace navigation">
+        <aside class="sidebar sidebar-with-account" id="workspace-navigation" aria-label="Workspace navigation">
             <p class="sidebar-title">WORKSPACE</p>
             <nav><a class="nav-item" href="index.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a><a class="nav-item" href="queue.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2 20v-2a6 6 0 0 1 12 0v2M16 5h6M17 10h5M18 15h4"/></svg>Today's Patients / Queue</a><a class="nav-item" href="search.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6 16a3 3 0 0 1 6 0M15 9h3M15 13h3"/></svg>Patient Lists</a><a class="nav-item" href="print-queue.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H3V9h18v9h-3M6 14h12v7H6zM17 12h1"/></svg>Print Queue</a><a
                     class="nav-item active" href="schedule.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M7 15h2M15 15h2"/></svg>My Schedule</a><hr class="navigation-divider"><a class="nav-item" href="accounts.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M19 8v6M16 11h6"/></svg>Create Secretary</a>
-</nav>
+<a class="nav-item" href="medication-prescription.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 3h8v4H8zM6 7h12v14H6zM9 13h6M12 10v6"/></svg>Medication Prescription</a></nav>
+        <nav class="sidebar-account" aria-label="Account"><a class="nav-item" href="user-profile.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>User Profile</a></nav>
         </aside>
         <main>
             <div class="page-head">
                 <div>
                     <div class="eyebrow">Doctor workspace</div>
                     <h1>My schedule</h1>
-                    <p>Review your operations and events booked by the secretary.</p>
+                    <p>Manage your operations and events.</p>
                 </div>
             </div>
             <div id="schedule-panel" class="schedule-board" data-schedule-kinds="operation,event"
@@ -75,21 +76,45 @@
                     </section>
                 </aside>
             </div>
+<details class="panel section schedule-booking">
+<summary>
+    <span class="schedule-booking-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4M17 3v4M3 11h18M12 14v4M10 16h4"/></svg></span>
+    <span class="schedule-booking-label">Add Schedule<span class="schedule-booking-hint">Book an operation or event</span></span>
+    <svg class="schedule-booking-chevron" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+</summary>
+<form id="booking-form" class="form-grid">
+<div class="field patient-picker" id="patient-picker">
+<label for="patient-search">Patient (optional for events)</label>
+<input id="patient-search" data-patient-search type="search" placeholder="Search patient name..." autocomplete="off" required aria-describedby="patient-search-status">
+<input type="hidden" name="patient_id" id="booking-patient">
+<div data-patient-results class="patient-picker-results"></div>
+<small id="patient-search-status" role="status" aria-live="polite">Type a name, then choose a patient.</small>
+</div>
+<label class="field">Doctor<select name="doctor_id" id="booking-doctor" required><option value="">Select doctor</option></select></label>
+<label class="field">Type<select name="kind" id="booking-kind"><option value="operation">Operation</option><option value="event">Event</option></select></label>
+<label class="field">Procedure / event title<input name="reason" required maxlength="500"></label>
+<label class="field">Start date and time<input type="datetime-local" name="starts_at" required></label>
+<label class="field">Location (optional)<input name="clinic_location" maxlength="200"></label>
+<div class="form-actions"><button class="primary" type="submit">Save Schedule</button></div>
+<p id="booking-status" class="form-status" role="status"></p></form>
+</details>
         </main>
     </div>
     <div id="schedule-alert-toast" class="schedule-alert-toast" role="alert" hidden>
         <div><strong id="schedule-alert-title"></strong>
-            <p id="schedule-alert-body"></p>
+            <p id="schedule-alert-body"></p><a id="schedule-alert-link" href="schedule.html">View schedule</a>
         </div>
         <button type="button" id="dismiss-schedule-alert" class="outline"
             aria-label="Dismiss notification">Dismiss</button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-config.js?v=20261008-config" defer></script>
     <script src="../Javascript/supabase-client.js" defer></script>
     <script src="../Javascript/session.js" defer></script>
     <script src="../Javascript/navigation.js" defer></script>
+    <script src="../Javascript/notification-center.js" defer></script>
     <script src="../Javascript/schedule-alerts.js" defer></script>
+    <script src="../Javascript/patient-picker.js" defer></script>
     <script src="../Javascript/schedule.js" defer></script>
 </body>
 
