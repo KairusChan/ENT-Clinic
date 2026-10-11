@@ -5,29 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENT Clinic | Login</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=0cb5dfd97d11">
+<link rel="stylesheet" href="css/login.css?v=1">
 </head>
 
 <body class="auth-page">
     <main class="auth-wrap">
-        <section class="auth-card">
+        <section class="login-welcome" aria-label="Welcome"><div class="login-brand"><div class="brand-mark">MC</div><div><strong>Clinic</strong><p>Clinic management portal</p></div></div><div class="welcome-copy"><h2>Welcome back!</h2><p>Sign in to manage your clinic, patients,<br> appointments and more.</p></div><img src="css/images/login-clinic.svg" alt="Doctor working at a clinic desk" class="clinic-illustration"></section><section class="auth-card">
             <div class="auth-heading">
                 <div class="brand-mark">MC</div>
                 <h1>Clinic</h1>
                 <p>Clinic management portal</p>
             </div>
-            <form class="auth-form" id="login-form">
-                <label>Email<input id="login-email" type="email" placeholder="you@example.com" required></label>
-                <label>Password<input id="login-password" type="password" placeholder="Your password" required></label>
-                <button class="auth-submit" type="submit">Login</button>
+            <div class="mobile-welcome"><h2>Welcome <span>back!</span></h2><p>Sign in to manage your patients, schedules,<br> and clinic tasks.</p></div><form class="auth-form" id="login-form">
+                <label>Email<input id="login-email" autocomplete="username" type="email" placeholder="you@example.com" required></label>
+                <label for="login-password">Password</label><div class="password-input"><input id="login-password" type="password" autocomplete="current-password" placeholder="Your password" required><button id="toggle-password" type="button" aria-label="Show password" aria-pressed="false">Show</button></div>
+                <button class="auth-submit" type="submit">Login <span aria-hidden="true">&rarr;</span></button>
             </form>
             <p class="auth-note" role="status" aria-live="polite">Sign in with the account created by your clinic administrator.</p>
+<aside class="login-permission" id="login-permission" hidden><strong>Stay up to date</strong><p id="login-permission-status" role="status">Enable notifications for clinic updates and reminders.</p><button type="button" id="enable-login-notifications">Enable notifications</button></aside>
         </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="Javascript/supabase-config.js" defer></script>
+    <script src="Javascript/supabase-config.js?v=20261008-config" defer></script>
     <script src="Javascript/supabase-client.js" defer></script>
-    <script src="Javascript/auth.js" defer></script>
+    <script src="Javascript/auth.js?v=registration-2" defer></script>
+<script src="Javascript/login-ui.js?v=1" defer></script>
 </body>
 
 </html>

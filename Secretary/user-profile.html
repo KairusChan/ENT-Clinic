@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENT Clinic | User Profile</title>
+    <link rel="stylesheet" href="../css/styles.css?v=0cb5dfd97d11">
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/patient-workspace.css">
+<script src="../Javascript/uppercase-inputs.js?v=1" defer></script><link rel="stylesheet" href="../css/user-profile.css?v=1">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="topbar-start">
+        <button class="navigation-toggle" type="button" aria-label="Toggle navigation" aria-controls="workspace-navigation" aria-expanded="true" hidden><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="brand">
+            <div class="brand-mark">ENT</div>
+            <div><strong>ENT Clinic</strong><small>Secretary workspace</small></div>
+        </div>
+    </div>
+        <a class="topbar-logout logout-link" href="../index.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v16h5M14 8l4 4-4 4M8 12h12"/></svg><span>Logout</span></a>
+    </header>
+    <div class="layout">
+        <aside class="sidebar sidebar-with-account" id="workspace-navigation" aria-label="Workspace navigation">
+            <p class="sidebar-title">WORKSPACE</p>
+            <nav><a class="nav-item" href="index.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a><a class="nav-item" href="queue.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2 20v-2a6 6 0 0 1 12 0v2M16 5h6M17 10h5M18 15h4"/></svg>Today's Patients / Queue</a><a class="nav-item" href="search.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6 16a3 3 0 0 1 6 0M15 9h3M15 13h3"/></svg>Patient Lists</a><a class="nav-item" href="pf.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z M9 7h6M9 11h6M9 15h3"/></svg>Professional Fees (PF)</a><hr class="navigation-divider"><a class="nav-item" href="print-queue.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H3V9h18v9h-3M6 14h12v7H6zM17 12h1"/></svg>Print Queue</a><a class="nav-item" href="schedule.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M7 15h2M15 15h2"/></svg>Schedule</a></nav>
+        <nav class="sidebar-account" aria-label="Account"><a class="nav-item active" href="user-profile.html" aria-current="page"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>User Profile</a></nav>
+        </aside>
+        <main>
+<div class="page-head"><div><p class="eyebrow">MY ACCOUNT</p><h1>User Profile</h1><p>Your clinic staff account details.</p></div></div>
+<section class="panel account-card" aria-labelledby="account-heading"><div class="account-card-heading"><div class="account-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg></div><div><h2 id="account-heading">Account details</h2><p>Your personal clinic account</p></div></div>
+<p id="user-profile-status" class="form-status" role="status">Loading profile...</p>
+<dl id="user-profile-details" class="account-details" hidden>
+<div><dt>Full name</dt><dd id="user-profile-name"></dd></div>
+<div><dt>Email address</dt><dd id="user-profile-email"></dd></div>
+<div><dt>Role</dt><dd id="user-profile-role"></dd></div>
+<div><dt>Account status</dt><dd id="user-profile-active"></dd></div>
+</dl></section>
+<section class="panel" aria-labelledby="password-heading">
+<h2 id="password-heading">Change Password</h2>
+<p>Choose a password with at least 6 characters. Passwords are case-sensitive.</p>
+<form id="change-password-form" class="form-grid">
+<label class="field" for="new-password">New password<input id="new-password" name="new_password" type="password" autocomplete="new-password" minlength="6" required></label>
+<label class="field" for="confirm-password">Confirm new password<input id="confirm-password" name="confirm_password" type="password" autocomplete="new-password" minlength="6" required></label>
+<div class="form-actions"><button class="primary" type="submit" disabled>Change Password</button></div>
+<p id="password-status" class="form-status" role="status" aria-live="polite"></p>
+</form></section>
+<section class="panel"><h2>Change email</h2><p>Update the email used to sign in to your existing account.</p><form id="self-email-form" class="form-grid"><label class="field">New email<input name="email" type="email" required></label><label class="field">Confirm email<input name="confirm_email" type="email" required></label><div class="form-actions"><button type="submit" class="primary">Change email</button></div><p id="self-email-status" role="status"></p></form></section></main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../Javascript/supabase-config.js?v=20261008-config" defer></script>
+    <script src="../Javascript/supabase-client.js" defer></script>
+    <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/notification-center.js" defer></script>
+    <script src="../Javascript/schedule-alerts.js" defer></script>
+    <script src="../Javascript/navigation.js" defer></script>
+    
+<script src="../Javascript/user-profile.js?v=1" defer></script>
+<script src="../Javascript/change-password.js?v=1" defer></script>
+<script src="../Javascript/self-email.js" defer></script></body>
+
+</html>

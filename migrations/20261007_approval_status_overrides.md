@@ -1,0 +1,11 @@
+Apply `20261007_approval_status_overrides.sql` after the consultation transfer and deletion approval migrations. This updates the existing RPCs and adds audit explanations; it does not execute any transfer or deletion during installation.
+
+The secretary can request transfer while either patient has a pending deletion request and while visits are waiting, active, scheduled, or completed. Saved consultations no longer require a completed visit status. The transfer still moves saved notes and their visits only. Visits without saved notes remain on the source patient.
+
+Each authoring doctor still approves their consultations. The final approval performs the transfer atomically. A pending deletion of the destination is rejected with an audit explanation because the destination now holds the transferred consultations. A pending source deletion remains available for the doctor to approve after the notes have moved. Approval does not change visit statuses. Status-only changes do not invalidate a request; changes to notes, patient identity, or other visit details still require a fresh request.
+
+The secretary can request deletion regardless of visit status or a pending transfer. Doctor approval deletes the patient and remaining appointments, including waiting or active visits, provided no saved notes remain. Pending transfers involving that patient are rejected with an audit explanation in the same transaction. Saved notes must be transferred first; foreign keys remain enforced.
+
+These exceptions are limited to the existing secretary request / doctor approval RPCs. An unrelated doctor still cannot approve a transfer. Direct note/visit reassignment, ordinary updates during pending deletion, and direct deletion while a transfer is pending retain their existing restrictions. Duplicate transfer requests and stale clinical snapshots remain protected. No new global bypass permission or client-controlled bypass flag is introduced.
+
+Validation: run `node --test --experimental-test-isolation=none tests/*.test.cjs`. PostgreSQL tests exercise both the earlier migration behavior and the new override behavior, including active/waiting visits, saved notes in a non-completed visit, simultaneous deletion requests, role restrictions, audit explanations, and note preservation. Tests use local PGlite, not the live database.

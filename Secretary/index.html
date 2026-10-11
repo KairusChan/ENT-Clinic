@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENT Clinic | Dashboard</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css?v=0cb5dfd97d11">
     <link rel="stylesheet" href="../css/navigation.css">
-</head>
+    <link rel="stylesheet" href="../css/secretary-dashboard.css">
+<script src="../Javascript/uppercase-inputs.js?v=1" defer></script></head>
 
 <body>
     <header class="topbar">
@@ -21,26 +22,40 @@
         <a class="topbar-logout logout-link" href="../index.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v16h5M14 8l4 4-4 4M8 12h12"/></svg><span>Logout</span></a>
     </header>
     <div class="layout">
-        <aside class="sidebar" id="workspace-navigation" aria-label="Workspace navigation">
+        <aside class="sidebar sidebar-with-account" id="workspace-navigation" aria-label="Workspace navigation">
             <p class="sidebar-title">WORKSPACE</p>
             <nav><a class="nav-item active" href="index.html" aria-current="page"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a><a class="nav-item" href="queue.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2 20v-2a6 6 0 0 1 12 0v2M16 5h6M17 10h5M18 15h4"/></svg>Today's Patients / Queue</a><a class="nav-item" href="search.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6 16a3 3 0 0 1 6 0M15 9h3M15 13h3"/></svg>Patient Lists</a><a class="nav-item" href="pf.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z M9 7h6M9 11h6M9 15h3"/></svg>Professional Fees (PF)</a><hr class="navigation-divider"><a class="nav-item" href="print-queue.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H3V9h18v9h-3M6 14h12v7H6zM17 12h1"/></svg>Print Queue</a><a class="nav-item" href="schedule.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M7 15h2M15 15h2"/></svg>Schedule</a></nav>
+        <nav class="sidebar-account" aria-label="Account"><a class="nav-item" href="user-profile.html"><svg class="navigation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>User Profile</a></nav>
         </aside>
         <main>
             <div class="page-head">
                 <div>
                     <div class="eyebrow">Clinic workspace</div>
                     <h1>Hello, Secretary</h1>
-                    <p>Ready for today's clinic? Start a patient check-in from here.</p>
+                    
                 </div>
             </div>
-            <section class="panel">
-                <div class="grid">
-                    <div class="metric"><strong id="metric-all">0</strong><small>Patients Today</small></div>
-                    <div class="metric"><strong id="metric-waiting">0</strong><small>Waiting</small></div>
-                    <div class="metric"><strong id="metric-with-doctor">0</strong><small>With Doctor</small></div>
-                    <div class="metric"><strong id="metric-completed">0</strong><small>Completed</small></div>
-                </div><a class="primary" href="appointment.html">＋ &nbsp; Add Appointment</a>
+            <section class="panel secretary-overview" aria-label="Patient and clinic actions">
+                <div class="grid overview-cards">
+                    <a class="overview-card overview-green" href="appointment.html">
+                        <svg class="overview-icon" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M16 4h23l13 13v39a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4Z"/><path d="M39 5v13h12" fill="#e1f5e9"/><path d="M32 29v18M23 38h18" fill="none" stroke="white" stroke-width="5"/></svg>
+                        <span>Add Appointment</span>
+                    </a>
+                    <a class="overview-card overview-purple" href="schedule.html">
+                        <svg class="overview-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="13" width="46" height="43" rx="5"/><path d="M21 6v14M43 6v14M9 26h46M22 40l7 7 14-14"/></svg>
+                        <span>Set Schedule</span>
+                    </a>
+                    <a class="overview-card overview-orange" href="print-queue.html">
+                        <svg class="overview-icon" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><rect x="17" y="3" width="30" height="24" rx="4"/><rect x="5" y="22" width="54" height="29" rx="7"/><rect x="17" y="39" width="30" height="22" rx="3"/><path d="M23 46h18v9H23Z" fill="#fff3e1"/><circle cx="49" cy="30" r="2.5" fill="#fff3e1"/></svg>
+                        <span>Print Queue</span>
+                    </a>
+                </div>
+                <div class="dashboard-actions">
+                    <a class="primary" href="register.html">New Patient</a>
+                    <a class="primary" href="appointment.html">Old Patient</a>
+                </div>
             </section>
+            <div class="dashboard-columns">
             <section class="panel section">
                 <div class="section-title">
                     <h3>Today's Queue (Latest)</h3><a href="queue.html">View All</a>
@@ -49,23 +64,25 @@
                     <p>Loading today's queue...</p>
                 </div>
             </section>
-            <section class="panel section" id="schedule-panel">
+            <section class="panel section" id="schedule-panel" data-schedule-kinds="operation,event">
                 <div class="section-title">
                     <h2>Doctor schedule</h2>
                 </div>
-                <p>Consultations, operations, and events. Times are shown in your local time zone. Reminders refresh every 30
-                    seconds while this workspace is open.</p>
+                
                 <div id="schedule-reminders" class="schedule-reminders" role="status" aria-live="polite"></div>
-                <label class="field">Schedule date<input id="schedule-date" type="date" required></label>
+                <label class="field">Schedule month<input id="schedule-date" type="month" required></label>
                 <div id="schedule-results">Loading schedule...</div>
                 <p id="schedule-status" role="status"></p>
             </section>
+            </div>
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="../Javascript/supabase-config.js" defer></script>
+    <script src="../Javascript/supabase-config.js?v=20261008-config" defer></script>
     <script src="../Javascript/supabase-client.js" defer></script>
     <script src="../Javascript/session.js" defer></script>
+    <script src="../Javascript/notification-center.js" defer></script>
+    <script src="../Javascript/schedule-alerts.js" defer></script>
     <script src="../Javascript/navigation.js" defer></script>
     <script src="../Javascript/dashboard.js" defer></script>
     <script src="../Javascript/schedule.js" defer></script>
